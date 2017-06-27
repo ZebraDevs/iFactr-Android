@@ -1,0 +1,213 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CADE7157-FECD-4220-9462-EF3D2B4733A6}</ProjectGuid>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>iFactr.Droid</RootNamespace>
+    <AssemblyName>iFactr.Droid</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <AndroidUseLatestPlatformSdk>False</AndroidUseLatestPlatformSdk>
+    <TargetFrameworkVersion>v6.0</TargetFrameworkVersion>
+    <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AndroidLinkMode>None</AndroidLinkMode>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib" />
+    <Reference Include="Mono.Android" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Activities\BaseActivity.cs" />
+    <Compile Include="AndroidDefaults.cs" />
+    <Compile Include="AndroidInstructor.cs" />
+    <Compile Include="Controls\AnimationView.cs" />
+    <Compile Include="Controls\Accessory.cs" />
+    <Compile Include="Controls\Browser.cs" />
+    <Compile Include="Controls\ButtonView.cs" />
+    <Compile Include="Controls\RadioButton.cs" />
+    <Compile Include="Controls\CheckBox.cs" />
+    <Compile Include="Controls\Grid.cs" />
+    <Compile Include="Controls\TextBase.cs" />
+    <Compile Include="Extensions\ElementExtensions.cs" />
+    <Compile Include="Imaging\ExifData.cs" />
+    <Compile Include="Imaging\ImageData.cs" />
+    <Compile Include="Menus and Toolbars\ToolbarButton.cs" />
+    <Compile Include="Extensions\PairableNotifyExtensions.cs" />
+    <Compile Include="Extensions\ConversionExtensions.cs" />
+    <Compile Include="Controls\GridBase.cs" />
+    <Compile Include="Activities\PopoverActivity.cs" />
+    <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="Resources\Fonts.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Fonts.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Activities\SplashActivity.cs" />
+    <Compile Include="ShakeListener.cs" />
+    <Compile Include="Views\BaseFragment.cs" />
+    <Compile Include="Tabs\ActionBarAdapter.cs" />
+    <Compile Include="Imaging\ImageGetter.cs" />
+    <Compile Include="DroidFactory.cs" />
+    <Compile Include="FragmentHistoryStack.cs" />
+    <Compile Include="Views\PopoverFragment.cs" />
+    <Compile Include="Views\CanvasFragment.cs" />
+    <Compile Include="Controls\DrawingView.cs" />
+    <Compile Include="Views\GridFragment.cs" />
+    <Compile Include="Controls\SearchBox.cs" />
+    <Compile Include="Activities\iFactrActivity.cs" />
+    <Compile Include="Integrations\AudioPlaybackExtensions.cs" />
+    <Compile Include="Integrations\AudioRecordingExtensions.cs" />
+    <Compile Include="Integrations\CameraExtensions.cs" />
+    <Compile Include="Integrations\Location\IReceiver.cs" />
+    <Compile Include="Integrations\Location\LocationListener.cs" />
+    <Compile Include="Integrations\MailToExtensions.cs" />
+    <Compile Include="Integrations\TelephoneExtensions.cs" />
+    <Compile Include="Integrations\VideoPlaybackExtensions.cs" />
+    <Compile Include="Integrations\VideoRecordingExtensions.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Resources\Resource.Designer.cs" />
+    <Compile Include="Alerts\Alert.cs" />
+    <Compile Include="Views\BrowserFragment.cs" />
+    <Compile Include="Controls\ButtonBase.cs" />
+    <Compile Include="Cells and Tiles\CellAdapter.cs" />
+    <Compile Include="Controls\DatePicker.cs" />
+    <Compile Include="Cells and Tiles\FooterView.cs" />
+    <Compile Include="Cells and Tiles\GridCell.cs" />
+    <Compile Include="Cells and Tiles\HeaderView.cs" />
+    <Compile Include="Cells and Tiles\ImageHeader.cs" />
+    <Compile Include="Controls\Image.cs" />
+    <Compile Include="Controls\Label.cs" />
+    <Compile Include="Views\ListViewFragment.cs" />
+    <Compile Include="Menus and Toolbars\Menu.cs" />
+    <Compile Include="Menus and Toolbars\MenuButton.cs" />
+    <Compile Include="Controls\PasswordBox.cs" />
+    <Compile Include="Cells and Tiles\RichText.cs" />
+    <Compile Include="Controls\SelectList.cs" />
+    <Compile Include="Controls\Slider.cs" />
+    <Compile Include="Controls\Switch.cs" />
+    <Compile Include="Tabs\TabItem.cs" />
+    <Compile Include="Controls\TextArea.cs" />
+    <Compile Include="Controls\TextBox.cs" />
+    <Compile Include="Controls\TimePicker.cs" />
+    <Compile Include="Timer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Imaging\AndroidCompositor.cs" />
+    <Compile Include="Menus and Toolbars\Toolbar.cs" />
+    <Compile Include="Menus and Toolbars\ToolbarSeparator.cs" />
+    <Compile Include="Tabs\ActionBarTabView.cs" />
+    <Compile Include="Tabs\TabMode.cs" />
+    <Compile Include="Views\VanityFragment.cs" />
+    <Compile Include="Integrations\GeoLocation.cs" />
+    <Compile Include="Integrations\Compass.cs" />
+    <Compile Include="Integrations\Accelerometer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\values\colors.xml" />
+    <AndroidResource Include="Resources\values\dimensions.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\values\styles.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout-large\main.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\main.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\popover.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout-large-land\main.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\ab_main_view.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout-land\ab_main_view.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout-large-land\ab_main_view.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\ic_menu_more_light.xml" />
+    <AndroidResource Include="Resources\drawable\ic_menu_more_dark.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_accessory.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_menu_light.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_menu_dark.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_accessory.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_menu_light.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_menu_dark.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_accessory.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_light.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_dark.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_menu_dark.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_menu_light.png" />
+    <AndroidResource Include="Resources\layout\fullscreen.axml" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_accessory.png" />
+    <AndroidResource Include="Resources\layout\popover_fullscreen.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\AndroidSymbols.ttf" />
+    <AndroidResource Include="Resources\layout\splash.axml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\Fonts.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Fonts.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\iFactr.UI\iFactr.UI\iFactr.UI.Debug.csproj">
+      <Project>{b6d01164-1aa8-4652-8c63-7da813cf6163}</Project>
+      <Name>iFactr.UI.Debug</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\iFactr.UI\MonoCross\MonoCross.csproj">
+      <Project>{4618ccfc-5895-4c44-ad25-8bf312a96b86}</Project>
+      <Name>MonoCross</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\iFactr.UI\MonoCross\Utilities\MonoCross.Droid.Debug.csproj">
+      <Project>{9357e5e9-0cf1-410b-9773-49789390fe54}</Project>
+      <Name>MonoCross.Droid.Debug</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

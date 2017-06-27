@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <color name="HeaderColor">#00000000</color>
+  <color name="HeaderTextColor">#00000000</color>
+  <color name="SectionHeaderColor">#00000000</color>
+  <color name="SectionHeaderTextColor">#00000000</color>
+  <color name="SelectionColor">#00000000</color>
+  <color name="LayerBackgroundColor">#00000000</color>
+  <color name="LayerItemBackgroundColor">#00000000</color>
+  <color name="SeparatorColor">#FFE5E5E5</color>
+  <color name="TextColor">#00000000</color>
+  <color name="SubTextColor">#FF808080</color>
+  <color name="SecondarySubTextColor">#FF808080</color>
+</resources>
