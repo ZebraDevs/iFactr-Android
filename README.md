@@ -34,8 +34,6 @@ StackOverflow is monitored. Post questions using the #iFactr tag.
 
 
 
-iFactr is open source with a [public repository][iFactr] on GitHub.
-
 ### Installation
 
 Add References iFactr DLLs.
