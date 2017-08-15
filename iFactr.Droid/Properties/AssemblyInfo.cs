@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("iFactr.Droid")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("The iFactr Android UI bindings library")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Zebra Technologies Corporation")]
 [assembly: AssemblyProduct("iFactr.Droid")]
