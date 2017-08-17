@@ -51,7 +51,7 @@
       <HintPath>..\iFactr.UI\Distribution\iFactr.UI.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\iFactr.UI\Distribution\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\iFactr.UI\MonoCross\Distribution\Newtonsoft.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

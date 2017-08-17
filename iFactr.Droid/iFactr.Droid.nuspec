@@ -4,17 +4,17 @@
     <id>iFactr.Droid</id>
     <version>$version$</version>
     <title>iFactr Android Framework</title>
-    <authors>Zebra</authors>
-    <owners>Zebra Technologies Corp.</owners>
+    <owners>Zebra</owners>
+    <authors>Zebra Technologies Corporation</authors>
     <licenseUrl>https://raw.githubusercontent.com/Zebra/iFactr-Android/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/Zebra/iFactr-Android</projectUrl>
-    <!--<iconUrl>https://raw.githubusercontent.com/Zebra/iFactr-UI/master/monocross.png</iconUrl>-->
+    <iconUrl>https://raw.githubusercontent.com/Zebra/iFactr-UI/master/iFactr.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A cross-platform mobile framework using C# .NET and Mono to create shared-code UI on iOS, Android, Windows and Webkit.</description>
     <summary>Cross-platform UI interfaces</summary>
     <releaseNotes>4.0 Release for iFactr Open Source with MIT license.</releaseNotes>
     <copyright>2010-2017 Zebra Technologies Corp.</copyright>
-    <tags>MonoCross iFactr</tags>
+    <tags>MonoCross iFactr Android UI</tags>
     <dependencies>
       <dependency id="MonoCross.Utilities.Droid" version="4.0.0.42" />
       <dependency id="iFactr.UI" version="4.0.0.42" />
