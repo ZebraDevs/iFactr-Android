@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <package>
   <metadata>
-    <id>iFactr.Droid</id>
+    <id>iFactr.Android</id>
     <version>$version$</version>
     <title>iFactr Android Framework</title>
     <owners>Zebra</owners>
@@ -16,7 +16,7 @@
     <copyright>2010-2017 Zebra Technologies Corp.</copyright>
     <tags>MonoCross iFactr Android UI</tags>
     <dependencies>
-      <dependency id="MonoCross.Utilities.Droid" version="4.0.0.42" />
+      <dependency id="MonoCross.Utilities.Android" version="4.0.0.42" />
       <dependency id="iFactr.UI" version="4.0.0.42" />
     </dependencies>
   </metadata>
