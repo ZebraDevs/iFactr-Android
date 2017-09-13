@@ -197,9 +197,9 @@
       <Project>{4618ccfc-5895-4c44-ad25-8bf312a96b86}</Project>
       <Name>MonoCross</Name>
     </ProjectReference>
-    <ProjectReference Include="..\iFactr.UI\MonoCross\Utilities\MonoCross.Utilities.Droid.Debug.csproj">
+    <ProjectReference Include="..\iFactr.UI\MonoCross\Utilities\MonoCross.Utilities.Android.Debug.csproj">
       <Project>{9357e5e9-0cf1-410b-9773-49789390fe54}</Project>
-      <Name>MonoCross.Utilities.Droid.Debug</Name>
+      <Name>MonoCross.Utilities.Android.Debug</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
