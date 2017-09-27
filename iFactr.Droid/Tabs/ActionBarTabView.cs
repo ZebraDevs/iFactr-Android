@@ -209,6 +209,10 @@ namespace iFactr.Droid
             set
             {
                 _tabItems = value;
+                if (_tabItems.Any() && _selectedIndex < 0)
+                {
+                    SelectedIndex = 0;
+                }
                 this.OnPropertyChanged();
             }
         }

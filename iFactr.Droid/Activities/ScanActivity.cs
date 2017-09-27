@@ -1,6 +1,6 @@
 using Android.OS;
-using iFactr.Core.Utilities;
-using iFactr.Scanning;
+using MonoCross.Utilities;
+using MonoCross.Scanning;
 using MonoCross.Navigation;
 
 namespace iFactr.Droid

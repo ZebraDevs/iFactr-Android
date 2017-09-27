@@ -8,7 +8,6 @@ using Android.Graphics.Drawables;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using MonoCross;
 using iFactr.Core.Layers;
 using iFactr.UI;
 using Object = Java.Lang.Object;
@@ -361,6 +360,10 @@ namespace iFactr.Droid
             set
             {
                 _tabItems = value;
+                if (_tabItems.Any() && _selectedIndex < 0)
+                {
+                    SelectedIndex = 0;
+                }
                 this.OnPropertyChanged();
             }
         }
