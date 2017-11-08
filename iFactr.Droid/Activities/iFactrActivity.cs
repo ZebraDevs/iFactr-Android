@@ -24,7 +24,7 @@ namespace iFactr.Droid
 
             if (DroidFactory.TheApp == null)
             {
-                Device.Log.Error($"The factory app has not been set. Please set {nameof(DroidFactory)}.{nameof(DroidFactory.MainActivity)} to this instance and set the app.");
+                Device.Log.Warn($"The app has not been set. Please set {nameof(TargetFactory)}.{nameof(TargetFactory.TheApp)} to this to your app instance.");
                 SetContentView(Resource.Layout.main);
             }
             else
