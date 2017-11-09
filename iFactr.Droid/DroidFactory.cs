@@ -152,7 +152,9 @@ namespace iFactr.Droid
             if (!Device.File.Exists(Accessory.FontPath))
                 Device.File.Save(Accessory.FontPath, Device.Resources.GetObject("AndroidSymbols") as byte[], EncryptionMode.NoEncryption);
 
-            iApp.VanityImagePath = "vanity.png";
+            if (Device.File.Exists("vanity.png"))
+                iApp.VanityImagePath = "vanity.png";
+
             base.Style.HeaderColor = MainActivity.Resources.GetColor(Resource.Color.HeaderColor).ToColor();
             base.Style.HeaderTextColor = MainActivity.Resources.GetColor(Resource.Color.HeaderTextColor).ToColor();
             base.Style.SectionHeaderColor = MainActivity.Resources.GetColor(Resource.Color.SectionHeaderColor).ToColor();

@@ -3,11 +3,11 @@ using Android.App;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
-using MonoCross;
 using MonoCross.Utilities;
 using iFactr.UI;
 using MonoCross.Navigation;
 using iFactr.Core;
+using iFactr.Core.Targets;
 
 namespace iFactr.Droid
 {

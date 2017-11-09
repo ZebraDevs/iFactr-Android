@@ -9,7 +9,6 @@ using Android.Provider;
 using Android.Webkit;
 using Android.Widget;
 using Java.IO;
-using MonoCross;
 using MonoCross.Utilities;
 using iFactr.UI;
 using Environment = Android.OS.Environment;
