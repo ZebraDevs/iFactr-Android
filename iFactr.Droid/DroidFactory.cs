@@ -304,7 +304,6 @@ namespace iFactr.Droid
                 var c = (view?.CurrentView as IView)?.TitleColor;
                 if (!c.HasValue || c.Value.IsDefaultColor)
                 {
-
                     actionBar.Title = title;
                     actionBar.Subtitle = subtitle;
                 }
@@ -334,15 +333,29 @@ namespace iFactr.Droid
                 }
             });
 
-            var style = view?.CurrentLayer?.LayerStyle ?? iApp.Instance.Style;
-            var baseActivity = MainActivity as BaseActivity;
-            if (baseActivity != null)
+            UI.Color headerColor;
+
+            if (view?.CurrentLayer != null)
             {
-                baseActivity.UpdateHeader(style.HeaderColor);
+                headerColor = view.CurrentLayer.LayerStyle.HeaderColor;
+            }
+            else if (view?.CurrentView is IView)
+            {
+                headerColor = ((IView)view.CurrentView).HeaderColor;
             }
             else
             {
-                actionBar.SetBackgroundDrawable(style.HeaderColor.ToColorDrawable());
+                headerColor = iApp.Instance.Style.HeaderColor;
+            }
+
+            var baseActivity = MainActivity as BaseActivity;
+            if (baseActivity != null)
+            {
+                baseActivity.UpdateHeader(headerColor);
+            }
+            else
+            {
+                actionBar.SetBackgroundDrawable(headerColor.ToColorDrawable());
             }
         }
 

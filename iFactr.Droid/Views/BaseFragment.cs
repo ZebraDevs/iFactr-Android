@@ -408,7 +408,6 @@ namespace iFactr.Droid
             {
                 if (_headerColor == value) return;
                 _headerColor = value;
-                (DroidFactory.MainActivity as BaseActivity)?.UpdateHeader(_headerColor);
                 this.OnPropertyChanged();
             }
         }
