@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoCross", "iFactr.UI\Mono
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iFactr.UI.Debug", "iFactr.UI\iFactr.UI\iFactr.UI.Debug.csproj", "{B6D01164-1AA8-4652-8C63-7DA813CF6163}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoCross.Utilities.Droid.Debug", "iFactr.UI\MonoCross\Utilities\MonoCross.Utilities.Droid.Debug.csproj", "{9357E5E9-0CF1-410B-9773-49789390FE54}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoCross.Utilities.Android.Debug", "iFactr.UI\MonoCross\Utilities\MonoCross.Utilities.Android.Debug.csproj", "{9357E5E9-0CF1-410B-9773-49789390FE54}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
