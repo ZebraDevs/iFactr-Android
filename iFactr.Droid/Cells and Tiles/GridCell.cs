@@ -3,8 +3,6 @@ using Android.Runtime;
 using iFactr.UI;
 using System;
 using System.Linq;
-using MonoCross;
-using MonoCross.Utilities;
 using iFactr.UI.Controls;
 using iFactr.UI.Instructions;
 using iFactr.Core;

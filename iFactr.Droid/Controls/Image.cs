@@ -326,8 +326,12 @@ namespace iFactr.Droid
                 var d = Drawable as BitmapDrawable;
                 if (d?.Bitmap == null && FilePath != null && FilePath.StartsWith("/"))
                 {
-                    var exif = new Android.Media.ExifInterface(FilePath);
-                    var orientation = exif.GetAttributeInt(Android.Media.ExifInterface.TagOrientation, 1);
+                    var orientation = 0;
+                    if (FilePath.EndsWith(".jpg") || FilePath.EndsWith(".jpeg"))
+                    {
+                        var exif = new Android.Media.ExifInterface(FilePath);
+                        orientation = exif.GetAttributeInt(Android.Media.ExifInterface.TagOrientation, 1);
+                    }
                     var options = new BitmapFactory.Options { InJustDecodeBounds = true, };
                     using (BitmapFactory.DecodeFile(FilePath, options))
                         switch (orientation)

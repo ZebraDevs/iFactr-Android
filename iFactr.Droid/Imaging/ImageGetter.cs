@@ -238,20 +238,23 @@ namespace iFactr.Droid
                 options.InDensity = (int)Math.Ceiling(Math.Max(Math.Max(1, optionsWidth / width), optionsHeight / height));
             }
 
-            var exif = new Android.Media.ExifInterface(fetchPath);
-            var orientation = exif.GetAttributeInt(Android.Media.ExifInterface.TagOrientation, 1);
             var matrix = new Matrix();
-            switch (orientation)
+            if (fetchPath.EndsWith(".jpg") || fetchPath.EndsWith(".jpeg"))
             {
-                case 6:
-                    matrix.PostRotate(90);
-                    break;
-                case 3:
-                    matrix.PostRotate(180);
-                    break;
-                case 8:
-                    matrix.PostRotate(270);
-                    break;
+                var exif = new Android.Media.ExifInterface(fetchPath);
+                var orientation = exif.GetAttributeInt(Android.Media.ExifInterface.TagOrientation, 1);
+                switch (orientation)
+                {
+                    case 6:
+                        matrix.PostRotate(90);
+                        break;
+                    case 3:
+                        matrix.PostRotate(180);
+                        break;
+                    case 8:
+                        matrix.PostRotate(270);
+                        break;
+                }
             }
 
             Bitmap retval;
