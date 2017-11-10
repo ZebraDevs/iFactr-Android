@@ -43,13 +43,13 @@ namespace iFactr.Droid
                         Stop();
                         break;
                     default:
-                        Start(Path.Combine(DroidFactory.Instance.TempPath, "Images", _callbackId));
+                        Start(Path.Combine(DroidFactory.Instance.TempPath, "Images", _callbackId) + ".3gp");
                         break;
                 }
             }
             else
             {
-                Start(Path.Combine(DroidFactory.Instance.TempPath, "Images", _callbackId));
+                Start(Path.Combine(DroidFactory.Instance.TempPath, "Images", _callbackId) + ".3gp");
             }
         }
 

@@ -640,8 +640,7 @@ namespace iFactr.Droid
         public static void HideKeyboard(bool fireLostFocus)
         {
             var tb = TextBase.CurrentFocus;
-            var view = tb ?? MainActivity.FindViewById(Resource.Id.fullscreen_fragment) ??
-                       PopoverFragment.Instance?.View?.FindViewById(Resource.Id.popover_fragment) ??
+            var view = tb ?? PopoverFragment.Instance?.View?.FindViewById(Resource.Id.popover_fragment) ??
                        MainActivity.FindViewById(Resource.Id.popover_fragment) ??
                        MainActivity.FindViewById(Resource.Id.master_fragment);
             if (view == null) return;

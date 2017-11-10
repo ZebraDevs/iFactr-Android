@@ -371,9 +371,7 @@ namespace iFactr.Droid
                 switch (Context.ActivePane)
                 {
                     case Pane.Master:
-                        return iApp.Instance.FormFactor == FormFactor.Fullscreen
-                            ? Resource.Id.fullscreen_fragment
-                            : Resource.Id.master_fragment;
+                        return Resource.Id.master_fragment;
                     case Pane.Detail:
                         return Resource.Id.detail_fragment;
                     case Pane.Popover:
