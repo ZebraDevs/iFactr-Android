@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using Android.App;
 using Android.Media;
-using MonoCross;
 using MonoCross.Utilities;
 using iFactr.UI;
 using iFactr.Core;
@@ -14,67 +13,88 @@ namespace iFactr.Droid
     {
         public const string Scheme = "voicerecording://";
         public const string CallbackParam = "AudioId";
-        private static MicAccess _access;
+        private static string _callback, _callbackId;
+        private static AlertDialog _recordingDialog;
+        private static MediaRecorder _mic;
 
         public static void Launch(Link link)
         {
-            var callbackUri = link.Parameters.GetValueOrDefault("callback");
-            _access = new MicAccess();
-            var id = Guid.NewGuid().ToString();
-            new AlertDialog.Builder(DroidFactory.MainActivity)
-                .SetTitle(iApp.Factory.GetResourceString("Recording") ?? "Recording...")
-                .SetPositiveButton(iApp.Factory.GetResourceString("StopRecording") ?? "Stop Recording", (o, e) =>
-                {
-                    _access.StopRecording();
-                    _access = null;
-                    if (callbackUri != null)
+            _callback = link.Parameters.GetValueOrDefault("callback");
+            _callbackId = Guid.NewGuid().ToString();
+
+            if (!link.Parameters.GetValueOrDefault("headless").TryParseBoolean())
+            {
+                _recordingDialog = new AlertDialog.Builder(DroidFactory.MainActivity)
+                    .SetTitle(iApp.Factory.GetResourceString("Recording") ?? "Recording...")
+                    .SetPositiveButton(iApp.Factory.GetResourceString("StopRecording") ?? "Stop Recording", (o, e) =>
                     {
-                        DroidFactory.Navigate(new Link(callbackUri, new Dictionary<string, string>
-                        {
-                            { CallbackParam, id },
-                        }));
-                    }
-                })
-                .SetCancelable(false)
-                .Show();
-            _access.StartRecordingFromMic(Path.Combine(DroidFactory.Instance.TempPath, "Images", id));
+                        Stop();
+                        _recordingDialog = null;
+                    })
+                    .SetCancelable(false)
+                    .Show();
+            }
+
+            if (link.Parameters.ContainsKey("command"))
+            {
+                switch (link.Parameters["command"])
+                {
+                    case "stop":
+                        Stop();
+                        break;
+                    default:
+                        Start(Path.Combine(DroidFactory.Instance.TempPath, "Images", _callbackId));
+                        break;
+                }
+            }
+            else
+            {
+                Start(Path.Combine(DroidFactory.Instance.TempPath, "Images", _callbackId));
+            }
         }
 
-        public class MicAccess
+        public static void Start(string fileName)
         {
-            public void StartRecordingFromMic(string fileName)
+            if (_mic != null)
             {
-                // set some default values for recording settings
-                _mic.SetAudioSource(AudioSource.Mic);
-                _mic.SetOutputFormat(OutputFormat.Default);
-                _mic.SetAudioEncoder(AudioEncoder.Default);
-
-                // define a filename and location for the output file
-                Device.File.EnsureDirectoryExistsForFile(fileName);
-                _mic.SetOutputFile(fileName);
-
-                // prepare and start recording
-                _mic.Prepare();
-                _mic.Start();
+                Stop();
             }
+            _mic = new MediaRecorder();
 
-            public void StopRecording()
+            // set some default values for recording settings
+            _mic.SetAudioSource(AudioSource.Mic);
+            _mic.SetOutputFormat(OutputFormat.ThreeGpp);
+            _mic.SetAudioEncoder(AudioEncoder.AmrNb);
+
+            // define a filename and location for the output file
+            Device.File.EnsureDirectoryExistsForFile(fileName);
+            _mic.SetOutputFile(fileName);
+
+            // prepare and start recording
+            _mic.Prepare();
+            _mic.Start();
+        }
+
+        public static void Stop()
+        {
+            _recordingDialog?.Dismiss();
+            _recordingDialog = null;
+
+            // stop recording
+            _mic.Stop();
+
+            // prepare object for GC by calling dispose
+            _mic.Release();
+            _mic.Dispose();
+            _mic = null;
+
+            if (_callback != null)
             {
-                // stop recording
-                _mic.Stop();
-
-                // prepare object for GC by calling dispose
-                _mic.Release();
-                _mic.Dispose();
-                _mic = null;
+                DroidFactory.Navigate(new Link(_callback, new Dictionary<string, string>
+                {
+                    { CallbackParam, _callbackId },
+                }));
             }
-
-            public MicAccess()
-            {
-                _mic = new MediaRecorder();
-            }
-
-            private MediaRecorder _mic;
         }
     }
 }
