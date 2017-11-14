@@ -87,7 +87,7 @@ namespace iFactr.Droid
             }
             catch (Exception e)
             {
-                Device.Log.Error(e);
+                Device.Log.Warn(e);
             }
 
             // prepare object for GC by calling dispose
