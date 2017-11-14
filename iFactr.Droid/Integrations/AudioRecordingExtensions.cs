@@ -81,7 +81,14 @@ namespace iFactr.Droid
             _recordingDialog = null;
 
             // stop recording
-            _mic.Stop();
+            try
+            {
+                _mic.Stop();
+            }
+            catch (Exception e)
+            {
+                Device.Log.Error(e);
+            }
 
             // prepare object for GC by calling dispose
             _mic.Release();
