@@ -40,7 +40,7 @@ namespace iFactr.Droid
             get { return PopoverActivity.Instance ?? AndroidDevice.Instance?.Context; }
             set
             {
-                value.RequestWindowFeature(Android.Views.WindowFeatures.IndeterminateProgress);
+                value.RequestWindowFeature(WindowFeatures.IndeterminateProgress);
                 if (!IsInitialized)
                 {
                     Device.Initialize(new AndroidDevice(value));

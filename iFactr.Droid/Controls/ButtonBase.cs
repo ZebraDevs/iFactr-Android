@@ -7,8 +7,6 @@ using Color = iFactr.UI.Color;
 using Android.Runtime;
 using Button = Android.Widget.Button;
 using Android.Content;
-using MonoCross;
-using MonoCross.Utilities;
 using iFactr.Core;
 
 namespace iFactr.Droid

@@ -8,7 +8,6 @@ using Android.App;
 using Android.Graphics.Drawables;
 using Android.Views;
 using Android.Widget;
-using MonoCross;
 using iFactr.Core.Layers;
 using MonoCross.Utilities;
 using iFactr.UI;

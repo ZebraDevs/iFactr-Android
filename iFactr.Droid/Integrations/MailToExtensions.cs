@@ -4,7 +4,6 @@ using Android.Content.PM;
 using Android.Net;
 using Android.Text;
 using Android.Widget;
-using MonoCross;
 using iFactr.UI;
 using MailTo = iFactr.Core.Integrations.MailTo;
 using iFactr.Core;

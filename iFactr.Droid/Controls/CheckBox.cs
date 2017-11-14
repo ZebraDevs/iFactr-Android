@@ -5,7 +5,6 @@ using Android.Graphics;
 using Android.Runtime;
 using Android.Util;
 using Android.Views;
-using MonoCross.Utilities;
 using iFactr.UI;
 using iFactr.UI.Controls;
 using Color = iFactr.UI.Color;

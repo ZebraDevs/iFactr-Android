@@ -6,7 +6,6 @@ using Android.Runtime;
 using Android.Content;
 using Android.Util;
 using Android.Text;
-using MonoCross.Utilities;
 
 namespace iFactr.Droid
 {

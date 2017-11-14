@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MonoCross;
 using iFactr.UI;
 using System.ComponentModel;
-using MonoCross.Utilities;
 using Android.App;
 using iFactr.Core.Layers;
 using Android.Graphics.Drawables;

@@ -7,7 +7,6 @@ using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
-using MonoCross;
 using iFactr.UI;
 using iFactr.UI.Controls;
 using Size = iFactr.UI.Size;

@@ -1,9 +1,7 @@
 using System;
 using Android.Graphics.Drawables;
-using Android.Text;
 using Android.Views;
 using iFactr.UI;
-using KeyboardType = iFactr.UI.KeyboardType;
 
 namespace iFactr.Droid
 {

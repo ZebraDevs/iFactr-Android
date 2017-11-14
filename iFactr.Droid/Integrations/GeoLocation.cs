@@ -1,7 +1,6 @@
 ﻿using System;
 using Android.Content;
 using Android.Locations;
-using MonoCross;
 using iFactr.Integrations;
 using iFactr.Core;
 

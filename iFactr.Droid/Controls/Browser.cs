@@ -4,7 +4,6 @@ using System.Linq;
 using Android.Content;
 using Android.Runtime;
 using Android.Webkit;
-using MonoCross;
 using iFactr.Core.Controls;
 using MonoCross.Utilities;
 using iFactr.UI;

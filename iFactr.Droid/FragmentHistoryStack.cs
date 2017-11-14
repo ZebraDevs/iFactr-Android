@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Android.App;
 using Android.OS;
-using MonoCross;
 using iFactr.Core.Layers;
 using iFactr.Core.Styles;
 using MonoCross.Utilities;

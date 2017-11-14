@@ -10,7 +10,6 @@ using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.Text;
 using Android.Util;
-using MonoCross;
 using MonoCross.Utilities;
 using MonoCross.Utilities.Storage;
 using iFactr.UI;

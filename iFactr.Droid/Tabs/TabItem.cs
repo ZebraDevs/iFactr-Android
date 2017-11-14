@@ -2,7 +2,6 @@
 using System.ComponentModel;
 using iFactr.UI;
 using Android.Runtime;
-using MonoCross;
 using iFactr.Core;
 
 namespace iFactr.Droid

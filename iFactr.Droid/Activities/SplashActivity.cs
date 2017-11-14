@@ -3,7 +3,6 @@ using Android.OS;
 using Android.Views;
 using Android.Views.InputMethods;
 using Android.Widget;
-using MonoCross;
 using MonoCross.Utilities;
 using iFactr.UI;
 using iFactr.Core;

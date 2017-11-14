@@ -3,7 +3,6 @@ using Android.Content;
 using Android.Runtime;
 using Android.Util;
 using Android.Views;
-using MonoCross.Utilities;
 using iFactr.UI;
 using iFactr.UI.Controls;
 using Size = iFactr.UI.Size;

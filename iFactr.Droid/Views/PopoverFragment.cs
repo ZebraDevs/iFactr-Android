@@ -5,7 +5,6 @@ using Android.OS;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
-using MonoCross;
 using iFactr.UI;
 using MonoCross.Navigation;
 using IMenu = iFactr.UI.IMenu;

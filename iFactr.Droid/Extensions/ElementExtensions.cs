@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using Android.Util;
 using Android.Views;
-using MonoCross;
 using MonoCross.Utilities;
 using iFactr.UI;
 using iFactr.UI.Controls;

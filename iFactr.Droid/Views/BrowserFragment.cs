@@ -2,7 +2,6 @@ using System;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
-using MonoCross;
 using MonoCross.Utilities;
 using View = Android.Views.View;
 using iFactr.Core;

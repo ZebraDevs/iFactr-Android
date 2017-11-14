@@ -13,7 +13,6 @@ using Point = iFactr.UI.Point;
 using Android.Runtime;
 using TextAlignment = iFactr.UI.TextAlignment;
 using Android.Util;
-using MonoCross;
 using MonoCross.Utilities;
 using Size = iFactr.UI.Size;
 using iFactr.Core;

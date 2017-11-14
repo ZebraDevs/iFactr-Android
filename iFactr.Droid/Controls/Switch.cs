@@ -6,7 +6,6 @@ using iFactr.UI.Controls;
 using Android.Runtime;
 using Android.Content;
 using Android.Util;
-using MonoCross.Utilities;
 using Size = iFactr.UI.Size;
 
 namespace iFactr.Droid

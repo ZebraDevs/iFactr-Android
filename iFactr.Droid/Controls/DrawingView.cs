@@ -7,7 +7,6 @@ using Android.Content;
 using Android.Views;
 using Android.Graphics;
 using Android.Widget;
-using MonoCross;
 using MonoCross.Utilities;
 using iFactr.UI;
 using Path = Android.Graphics.Path;
