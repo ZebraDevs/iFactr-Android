@@ -55,7 +55,7 @@ For production release:
 $ build
 ```
 
-This will create the iFactr.Wpf assembly for use when compiling an .APK for your iFactr application.
+This will create the iFactr.Droid assembly for use when compiling an .APK for your iFactr application.
 
 License
 ----
