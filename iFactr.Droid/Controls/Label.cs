@@ -94,6 +94,7 @@ namespace iFactr.Droid
             get { return _text; }
             set
             {
+                if (_text == value) return;
                 _text = value;
                 Device.Thread.ExecuteOnMainThread(() =>
                 {
@@ -112,7 +113,7 @@ namespace iFactr.Droid
         private void Label_TextChanged(object sender, TextChangedEventArgs e)
         {
             var old = StringValue;
-            var ellipsized = (Text ?? string.Empty).EndsWith(Ellipsis);
+            var ellipsized = _text != base.Text && base.Text != null && base.Text.EndsWith(Ellipsis);
             var infinitySize = new Size(double.PositiveInfinity, double.PositiveInfinity);
 
             if (!ellipsized && StringValue != Text)
@@ -511,7 +512,7 @@ namespace iFactr.Droid
                         }
                     }
                 }
-                else if (Text != StringValue)
+                else if (base.Text != StringValue)
                 {
                     SetText(StringValue, BufferType.Normal);
                     _measuredLines = layout.LineCount;

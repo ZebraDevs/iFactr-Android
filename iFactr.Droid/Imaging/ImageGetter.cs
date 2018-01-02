@@ -14,13 +14,14 @@ using MonoCross.Utilities;
 using MonoCross.Utilities.Storage;
 using iFactr.UI;
 using iFactr.Core;
+using MonoCross.Navigation;
 
 namespace iFactr.Droid
 {
     public class ImageGetter : Java.Lang.Object, Html.IImageGetter
     {
         public static Android.Content.Res.Resources Resources { get; }
-        private static readonly Dictionary<string, List<Action<Bitmap, string, bool>>> PendingDownloads = new Dictionary<string, List<Action<Bitmap, string, bool>>>();
+        private static readonly SerializableDictionary<string, List<Action<Bitmap, string, bool>>> PendingDownloads = new SerializableDictionary<string, List<Action<Bitmap, string, bool>>>();
 
         static ImageGetter()
         {
