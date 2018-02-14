@@ -197,13 +197,18 @@ namespace iFactr.Droid
             if (stack == null || (target = DroidFactory.MainActivity.FindViewById<Image>(stack.BackgroundId) ??
                 PopoverFragment.Instance?.View?.FindViewById<Image>(stack.BackgroundId)) == null) return;
 
-            if (_background == null)
+            if (_background == null && iApp.Instance != null)
             {
                 _background = iApp.Instance.Style.LayerBackgroundImage ??
                               iApp.Instance.Style.LayerBackgroundColor.HexCode;
             }
 
-            if (_background.StartsWith("#"))
+            if (string.IsNullOrEmpty(_background))
+            {
+                target.FilePath = null;
+                iApp.Thread.ExecuteOnMainThread(() => { target.SetImageDrawable(null); });
+            }
+            else if (_background.StartsWith("#"))
             {
                 target.Stretch = ContentStretch.Fill;
                 target.FilePath = null;
@@ -402,7 +407,7 @@ namespace iFactr.Droid
 
         public Color HeaderColor
         {
-            get { return _headerColor.IsDefaultColor ? iApp.Instance.Style.HeaderColor : _headerColor; }
+            get { return _headerColor.IsDefaultColor && iApp.Instance != null ? iApp.Instance.Style.HeaderColor : _headerColor; }
             set
             {
                 if (_headerColor == value) return;
@@ -454,7 +459,7 @@ namespace iFactr.Droid
 
         public Color TitleColor
         {
-            get { return _titleColor.IsDefaultColor ? iApp.Instance.Style.HeaderTextColor : _titleColor; }
+            get { return _titleColor.IsDefaultColor && iApp.Instance != null ? iApp.Instance.Style.HeaderTextColor : _titleColor; }
             set
             {
                 if (_titleColor == value) return;

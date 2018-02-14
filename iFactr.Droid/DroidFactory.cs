@@ -292,7 +292,7 @@ namespace iFactr.Droid
             var masterView = master?.CurrentView as IView;
             var detailView = detail?.CurrentView as IView;
 
-            var title = masterView == null ? iApp.Instance.Title : masterView.Title;
+            var title = masterView == null ? iApp.Instance?.Title : masterView.Title;
             var subtitle = detailView?.Title;
             if (string.IsNullOrWhiteSpace(subtitle)) { subtitle = null; }
 
@@ -343,9 +343,13 @@ namespace iFactr.Droid
             {
                 headerColor = ((IView)view.CurrentView).HeaderColor;
             }
-            else
+            else if (iApp.Instance != null)
             {
                 headerColor = iApp.Instance.Style.HeaderColor;
+            }
+            else
+            {
+                return;
             }
 
             var baseActivity = MainActivity as BaseActivity;
