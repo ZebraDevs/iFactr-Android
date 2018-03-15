@@ -67,45 +67,54 @@ namespace iFactr.Droid
             if (visibility > 0) element.Visibility = (Visibility)visibility;
 
             string font = attrs.GetAttributeValue(XmlNamespace, "font");
-            var fontProp = Device.Reflector.GetProperty(typeof(Font), font);
-            if (fontProp != null)
+            if (font != null)
             {
-                var value = fontProp.GetValue(Font.PreferredLabelFont);
-                Device.Reflector.GetProperty(element.GetType(), "Font")?.SetValue(element, value);
-            }
-            else if (font != null)
-            {
-                var defaults = MXContainer.Resolve<IPlatformDefaults>(typeof(IPlatformDefaults));
-                var defaultsProp = Device.Reflector.GetProperty(defaults.GetType(), font);
-                if (defaultsProp != null)
+                var fontProp = Device.Reflector.GetProperty(typeof(Font), font);
+                if (fontProp != null)
                 {
-                    var value = defaultsProp.GetValue(defaults);
+                    var value = fontProp.GetValue(Font.PreferredLabelFont);
                     Device.Reflector.GetProperty(element.GetType(), "Font")?.SetValue(element, value);
+                }
+                else
+                {
+                    var defaults = MXContainer.Resolve<IPlatformDefaults>(typeof(IPlatformDefaults));
+                    var defaultsProp = Device.Reflector.GetProperty(defaults.GetType(), font);
+                    if (defaultsProp != null)
+                    {
+                        var value = defaultsProp.GetValue(defaults);
+                        Device.Reflector.GetProperty(element.GetType(), "Font")?.SetValue(element, value);
+                    }
                 }
             }
 
             string foregroundColor = attrs.GetAttributeValue(XmlNamespace, "foregroundColor");
-            var colorProp = Device.Reflector.GetProperty(typeof(Color), foregroundColor);
-            if (colorProp != null)
+            if (foregroundColor != null)
             {
-                var value = colorProp.GetValue(Color.Transparent);
-                Device.Reflector.GetProperty(element.GetType(), "ForegroundColor")?.SetValue(element, value);
-            }
-            else if (foregroundColor != null)
-            {
-                Device.Reflector.GetProperty(element.GetType(), "ForegroundColor")?.SetValue(element, new Color(foregroundColor));
+                var colorProp = Device.Reflector.GetProperty(typeof(Color), foregroundColor);
+                if (colorProp != null)
+                {
+                    var value = colorProp.GetValue(Color.Transparent);
+                    Device.Reflector.GetProperty(element.GetType(), "ForegroundColor")?.SetValue(element, value);
+                }
+                else
+                {
+                    Device.Reflector.GetProperty(element.GetType(), "ForegroundColor")?.SetValue(element, new Color(foregroundColor));
+                }
             }
 
             string backgroundColor = attrs.GetAttributeValue(XmlNamespace, "backgroundColor");
-            colorProp = Device.Reflector.GetProperty(typeof(Color), backgroundColor);
-            if (colorProp != null)
+            if (backgroundColor != null)
             {
-                var value = colorProp.GetValue(Color.Transparent);
-                Device.Reflector.GetProperty(element.GetType(), "BackgroundColor")?.SetValue(element, value);
-            }
-            else if (backgroundColor != null)
-            {
-                Device.Reflector.GetProperty(element.GetType(), "BackgroundColor")?.SetValue(element, new Color(backgroundColor));
+                var colorProp = Device.Reflector.GetProperty(typeof(Color), backgroundColor);
+                if (colorProp != null)
+                {
+                    var value = colorProp.GetValue(Color.Transparent);
+                    Device.Reflector.GetProperty(element.GetType(), "BackgroundColor")?.SetValue(element, value);
+                }
+                else
+                {
+                    Device.Reflector.GetProperty(element.GetType(), "BackgroundColor")?.SetValue(element, new Color(backgroundColor));
+                }
             }
 
             string margin = attrs.GetAttributeValue(XmlNamespace, "margin");
