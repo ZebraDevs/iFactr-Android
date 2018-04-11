@@ -80,19 +80,15 @@
           ITaskItem item = Files[i];
           var info = new FileInfo(item.GetMetadata("FullPath"));
           item = new TaskItem(item.ItemSpec);
-          Value[i] = item;
-          item.SetMetadata("Name", info.Name.Remove(info.Name.Length - info.Extension.Length));
-
           var version = info.Exists ? FileVersionInfo.GetVersionInfo(info.FullName).FileVersion : null;
           if (string.IsNullOrEmpty(version))
-          {
-              Value[i] = null;
               continue;
-          }
+          item.SetMetadata("Name", info.Name.Remove(info.Name.Length - info.Extension.Length));
           var format = Formats != null && Formats.Length > 0 ? Formats[i].ItemSpec : null;
           while (!string.IsNullOrEmpty(format) && format.ToCharArray().Count(c => c =='.') <  version.ToCharArray().Count(c => c =='.'))
               version = version.Remove(version.LastIndexOf('.'));
           item.SetMetadata("Version", version);
+          Value[i] = item;
         }
       }
 ]]>
