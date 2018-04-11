@@ -57,7 +57,7 @@
       <GetFileVersion Files="Distribution/iFactr.Droid.dll">
         <Output TaskParameter="Value" ItemName="Assembly" />
       </GetFileVersion>
-      <Exec Condition="'$(Ext)' != ''" WorkingDirectory="$(Framework)" Command="nuget pack -Symbols -Version %(Assembly.Version) iFactr.Droid.csproj -Prop Configuration=$(Configuration);SignAssembly=$(SignAssembly);AssemblyOriginatorKeyFile=$(AssemblyOriginatorKeyFile)" />
+      <Exec WorkingDirectory="$(Framework)" Command="nuget pack -Symbols -Version %(Assembly.Version) iFactr.Droid.csproj -Prop Configuration=$(Configuration);SignAssembly=$(SignAssembly);AssemblyOriginatorKeyFile=$(AssemblyOriginatorKeyFile)" />
       <Exec WorkingDirectory="$(Framework)" Command="git checkout -- iFactr.Droid.nuspec" />
     </Target>
 
