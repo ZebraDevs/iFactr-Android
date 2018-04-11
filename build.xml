@@ -100,7 +100,7 @@
     <ParameterGroup>
         <XPath ParameterType="System.String" Required="true" />
         <XmlFileName ParameterType="System.String" Required="true" />
-        <Value ParameterType="System.String" Output="true" />
+        <Value ParameterType="Microsoft.Build.Framework.ITaskItem[]" Output="true" />
     </ParameterGroup>
     <Task>
         <Reference Include="System.Xml" />
@@ -111,9 +111,11 @@
 	var nsmgr = new XmlNamespaceManager(doc.NameTable);
 	foreach (XmlAttribute pair in doc.DocumentElement.Attributes)
 		if (pair.Name.StartsWith("xmlns:")) nsmgr.AddNamespace(pair.Name.Substring(6), pair.Value);
-	var node = doc.DocumentElement.SelectSingleNode(XPath, nsmgr);
-	if (node is XmlAttribute) Value = node.Value;
-	else Value = node.InnerXml;
+	var nodes = doc.DocumentElement.SelectNodes(XPath, nsmgr);
+	Value = new TaskItem[nodes.Count];
+	for (int i = 0; i < nodes.Count; i++)
+		if (nodes[i] is XmlAttribute) Value[i] = new TaskItem(nodes[i].Value);
+		else Value[i] = new TaskItem(nodes[i].InnerXml);
 ]]></Code>
     </Task>
   </UsingTask>
