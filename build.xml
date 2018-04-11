@@ -90,6 +90,7 @@
           item.SetMetadata("Version", version);
           Value[i] = item;
         }
+        Value = Value.Where(v => v != null).ToArray();
       }
 ]]>
         </Code>
