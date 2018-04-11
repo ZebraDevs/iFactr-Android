@@ -119,7 +119,6 @@
     <Compile Include="Timer.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Imaging\AndroidCompositor.cs" />
     <Compile Include="Menus and Toolbars\Toolbar.cs" />
     <Compile Include="Menus and Toolbars\ToolbarSeparator.cs" />
     <Compile Include="Tabs\ActionBarTabView.cs" />

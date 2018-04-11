@@ -9,11 +9,10 @@ namespace iFactr.Droid
     {
         public static void OnPropertyChanged(this IPairable obj, [CallerMemberName] string propertyName = null)
         {
-            var prop = obj as INotifyPropertyChanged;
             var jObject = obj as Java.Lang.Object;
-            if (prop != null && (jObject == null || jObject.Handle != IntPtr.Zero))
+            if (obj is INotifyPropertyChanged && (jObject == null || jObject.Handle != IntPtr.Zero))
             {
-                obj.RaiseEvent(nameof(prop.PropertyChanged), new PropertyChangedEventArgs(propertyName));
+                obj.RaiseEvent(nameof(INotifyPropertyChanged.PropertyChanged), new PropertyChangedEventArgs(propertyName));
             }
         }
     }

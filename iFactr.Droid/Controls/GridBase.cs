@@ -351,6 +351,6 @@ namespace iFactr.Droid
                 _pair.Pair = this;
             }
         }
-        private IPairable _pair;
+        internal IPairable _pair;
     }
 }

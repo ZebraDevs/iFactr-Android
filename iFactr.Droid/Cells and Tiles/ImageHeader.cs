@@ -65,17 +65,16 @@ namespace iFactr.Droid
             set { _image.FilePath = value; }
         }
 
-        public IPairable Pair
+        public new IPairable Pair
         {
             get { return _pair; }
             set
-            {
+            { 
                 if (_pair != null || value == null) return;
                 _pair = value;
                 _pair.Pair = this;
                 this.OnPropertyChanged();
             }
         }
-        private IPairable _pair;
     }
 }

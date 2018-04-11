@@ -86,10 +86,10 @@ namespace iFactr.Droid
             Instance = null;
         }
 
-        public override void OnAttach(Activity activity)
+        public override void OnAttach(Context context)
         {
             Instance = this;
-            base.OnAttach(activity);
+            base.OnAttach(context);
         }
 
         public static void Close()
