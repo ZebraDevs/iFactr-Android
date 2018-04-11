@@ -45,8 +45,8 @@
       </XmlRead>
       <ItemGroup>
         <_DepPaths Include="$(_Deps.Split(';'))"/>
-        <DepPaths Include="iFactr.UI/Distribution/%(_DepPaths.Identity).dll"/>
         <DepPaths Include="iFactr.UI/MonoCross/Distribution/%(_DepPaths.Identity).dll"/>
+        <DepPaths Include="iFactr.UI/Distribution/%(_DepPaths.Identity).dll"/>
       </ItemGroup>
       <GetFileVersion Files="@(DepPaths)" Formats="@(Formats)">
         <Output TaskParameter="Value" ItemName="Dependencies" />
@@ -84,7 +84,7 @@
           if (string.IsNullOrEmpty(version))
               continue;
           item.SetMetadata("Name", info.Name.Remove(info.Name.Length - info.Extension.Length));
-          var format = Formats != null && Formats.Length > 0 ? Formats[i].ItemSpec : null;
+          var format = Formats != null && Formats.Length > 0 ? Formats[Value.Count(v => v != null)].ItemSpec : null;
           while (!string.IsNullOrEmpty(format) && format.ToCharArray().Count(c => c =='.') <  version.ToCharArray().Count(c => c =='.'))
               version = version.Remove(version.LastIndexOf('.'));
           item.SetMetadata("Version", version);
