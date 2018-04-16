@@ -149,9 +149,6 @@ namespace iFactr.Droid
         {
             ((AndroidResources)Device.Resources).Assembly = GetType().Assembly;
 
-            if (!Device.File.Exists(Accessory.FontPath))
-                Device.File.Save(Accessory.FontPath, Device.Resources.GetObject("AndroidSymbols") as byte[], EncryptionMode.NoEncryption);
-
             if (Device.File.Exists("vanity.png"))
                 iApp.VanityImagePath = "vanity.png";
 

@@ -20,10 +20,18 @@ namespace iFactr.Droid
             set
             {
                 _fontPath = value;
+
+                if (!Device.File.Exists(_fontPath))
+                {
+                    var info = new System.IO.FileInfo(_fontPath);
+                    var font = Device.Resources.GetObject(info.Name.Remove(info.Name.Length - info.Extension.Length - 1)) as byte[];
+                    Device.File.Save(_fontPath, font, EncryptionMode.NoEncryption);
+                }
+
                 SetTypeface(Typeface.CreateFromFile(FontPath), TypefaceStyle.Normal);
             }
         }
-        private string _fontPath = System.IO.Path.Combine(Device.DataPath, "fonts", "androidsymbols.ttf");
+        private string _fontPath = System.IO.Path.Combine(Device.DataPath, "fonts", "AndroidSymbols.ttf");
 
         public virtual UI.Color ForegroundColor
         {
