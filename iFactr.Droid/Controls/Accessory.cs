@@ -14,10 +14,29 @@ namespace iFactr.Droid
 {
     public class Accessory : Android.Widget.Button, IControl
     {
-        internal static string FontPath => System.IO.Path.Combine(Device.DataPath, "fonts", "androidsymbols.ttf");
+        public virtual string FontPath
+        {
+            get { return _fontPath; }
+            set
+            {
+                _fontPath = value;
+                SetTypeface(Typeface.CreateFromFile(FontPath), TypefaceStyle.Normal);
+            }
+        }
+        private string _fontPath = System.IO.Path.Combine(Device.DataPath, "fonts", "androidsymbols.ttf");
 
-        internal static Typeface SymbolFont => _typeface ?? (_typeface = Typeface.CreateFromFile(FontPath));
-        private static Typeface _typeface;
+        public virtual UI.Color ForegroundColor
+        {
+            get => _foregroundColor;
+            set
+            {
+                _foregroundColor = value;
+                SetTextColor(_foregroundColor.ToColor());
+            }
+        }
+        private UI.Color _foregroundColor = new UI.Color(190, 190, 190);
+
+        public virtual string Glyph { get; set; } = ""; // ⓘ
 
         [Preserve]
         public Accessory()
@@ -55,16 +74,16 @@ namespace iFactr.Droid
         {
             Focusable = false;
             SetTextSize(ComplexUnitType.Dip, 22);
-            SetTextColor(Android.Graphics.Color.Argb(255, 190, 190, 190));
+            SetTextColor(_foregroundColor.ToColor());
 
             if (Device.File.Exists(FontPath))
             {
-                SetTypeface(SymbolFont, TypefaceStyle.Normal);
-                Text = ""; // ⓘ
+                SetTypeface(Typeface.CreateFromFile(FontPath), TypefaceStyle.Normal);
+                Text = Glyph;
             }
             else
             {
-                Text = "ⓘ";
+                Text = "?";
             }
 
             var size = (int)(Cell.StandardCellHeight * DroidFactory.DisplayScale);
@@ -95,7 +114,6 @@ namespace iFactr.Droid
                         base.Visibility = ViewStates.Gone;
                         break;
                 }
-                this.OnPropertyChanged();
                 this.RequestResize(oldVisibility == Visibility.Collapsed || _visibility == Visibility.Collapsed);
             }
         }
@@ -106,10 +124,8 @@ namespace iFactr.Droid
             get { return Handle != IntPtr.Zero && Enabled; }
             set
             {
-                if (Handle == IntPtr.Zero || Enabled == value) return;
-                Enabled = value;
-                this.OnPropertyChanged();
-                this.OnPropertyChanged("Enabled");
+                if (Handle != IntPtr.Zero && Enabled != value)
+                    Enabled = value;
             }
         }
 
