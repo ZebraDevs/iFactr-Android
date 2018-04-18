@@ -13,8 +13,8 @@
     <RootNamespace>iFactr.Droid</RootNamespace>
     <AssemblyName>iFactr.Droid</AssemblyName>
     <FileAlignment>512</FileAlignment>
-    <AndroidUseLatestPlatformSdk>False</AndroidUseLatestPlatformSdk>
-    <TargetFrameworkVersion>v7.1</TargetFrameworkVersion>
+    <AndroidUseLatestPlatformSdk>false</AndroidUseLatestPlatformSdk>
+    <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -38,15 +38,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
     <Reference Include="MonoCross">
       <HintPath>..\iFactr.UI\MonoCross\Distribution\MonoCross.dll</HintPath>
     </Reference>
     <Reference Include="MonoCross.Utilities.Android">
       <HintPath>..\iFactr.UI\MonoCross\Distribution\MonoCross.Utilities.Android.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml" />
     <Reference Include="iFactr.UI">
       <HintPath>..\iFactr.UI\Distribution\iFactr.UI.dll</HintPath>
     </Reference>

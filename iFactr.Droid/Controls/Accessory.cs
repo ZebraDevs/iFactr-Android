@@ -16,18 +16,19 @@ namespace iFactr.Droid
     {
         public virtual string FontPath
         {
-            get { return _fontPath; }
+            get
+            {
+                if (!System.IO.File.Exists(_fontPath))
+                {
+                    var info = new System.IO.FileInfo(_fontPath);
+                    var font = Device.Resources.GetObject(info.Name.Remove(info.Name.Length - info.Extension.Length)) as byte[];
+                    Device.File.Save(_fontPath, font, EncryptionMode.NoEncryption);
+                }
+                return _fontPath;
+            }
             set
             {
                 _fontPath = value;
-
-                if (!Device.File.Exists(_fontPath))
-                {
-                    var info = new System.IO.FileInfo(_fontPath);
-                    var font = Device.Resources.GetObject(info.Name.Remove(info.Name.Length - info.Extension.Length - 1)) as byte[];
-                    Device.File.Save(_fontPath, font, EncryptionMode.NoEncryption);
-                }
-
                 SetTypeface(Typeface.CreateFromFile(FontPath), TypefaceStyle.Normal);
             }
         }
@@ -81,24 +82,16 @@ namespace iFactr.Droid
         private void Initialize(IAttributeSet attrs = null)
         {
             Focusable = false;
-            SetTextSize(ComplexUnitType.Dip, 22);
+            this.InitializeAttributes(attrs);
+            SetBackgroundColor(Android.Graphics.Color.Transparent);
             SetTextColor(_foregroundColor.ToColor());
-
-            if (Device.File.Exists(FontPath))
-            {
-                SetTypeface(Typeface.CreateFromFile(FontPath), TypefaceStyle.Normal);
-                Text = Glyph;
-            }
-            else
-            {
-                Text = "?";
-            }
+            SetTypeface(Typeface.CreateFromFile(FontPath), TypefaceStyle.Normal);
+            Text = Glyph;
 
             var size = (int)(Cell.StandardCellHeight * DroidFactory.DisplayScale);
             SetWidth(size);
             SetHeight(size);
-            SetBackgroundColor(Android.Graphics.Color.Transparent);
-            this.InitializeAttributes(attrs);
+            SetTextSize(ComplexUnitType.Dip, 22);
         }
 
         public new Visibility Visibility
