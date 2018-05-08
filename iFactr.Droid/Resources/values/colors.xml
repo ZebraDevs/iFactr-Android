@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+  <color name="AccessoryColor">#FFBEBEBE</color>
   <color name="HeaderColor">#00000000</color>
   <color name="HeaderTextColor">#00000000</color>
   <color name="SectionHeaderColor">#00000000</color>

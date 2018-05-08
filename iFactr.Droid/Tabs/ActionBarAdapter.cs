@@ -176,9 +176,8 @@ namespace iFactr.Droid
         public override View GetDropDownView(int position, View convertView, ViewGroup parent)
         {
             var view = (CheckedTextView)base.GetDropDownView(position, convertView, parent);
-
-            // TODO: Get action bar text color and set to that
-            view.SetTextColor((iApp.Instance.Style.HeaderTextColor.IsDefaultColor ? Color.White : iApp.Instance.Style.HeaderTextColor).ToColor());
+            if (!iApp.Instance.Style.HeaderTextColor.IsDefaultColor)
+                view.SetTextColor(iApp.Instance.Style.HeaderTextColor.ToColor());
             if (!iApp.Instance.Style.HeaderColor.IsDefaultColor)
                 view.SetBackgroundColor(iApp.Instance.Style.HeaderColor.ToColor());
             return view;
