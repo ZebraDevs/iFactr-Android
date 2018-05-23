@@ -8,6 +8,7 @@ using Android.Widget;
 using MonoCross.Utilities;
 using iFactr.UI;
 using View = Android.Views.View;
+using MonoCross.Navigation;
 
 namespace iFactr.Droid
 {
@@ -50,15 +51,13 @@ namespace iFactr.Droid
             var search = DroidFactory.GetNativeObject<SearchBox>(SearchBox, nameof(SearchBox));
             AttachSearchView(search, layout);
 
-            List = new ListView(Activity)
-            {
-                Adapter = new CellAdapter(this),
-                OnItemSelectedListener = this,
-                OnItemClickListener = this,
-                OnItemLongClickListener = this,
-                DescendantFocusability = DescendantFocusability.BeforeDescendants,
-                ScrollingCacheEnabled = false,
-            };
+            List = MXContainer.Resolve<ListView>(Activity);
+            List.OnItemSelectedListener = this;
+            List.OnItemClickListener = this;
+            List.OnItemLongClickListener = this;
+            List.DescendantFocusability = DescendantFocusability.BeforeDescendants;
+            List.ScrollingCacheEnabled = false;
+            List.Adapter = new CellAdapter(this);
             List.ScrollStateChanged += (o, e) =>
             {
                 if (e.ScrollState == ScrollState.Idle)
