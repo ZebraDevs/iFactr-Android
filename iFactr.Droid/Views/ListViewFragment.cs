@@ -273,23 +273,27 @@ namespace iFactr.Droid
 
         public void ScrollToCell(int section, int index, bool animated, int top)
         {
-            _touchScroll = false;
             var position = GetPosition(section, index);
             if (List == null)
             {
+                _touchScroll = false;
                 _index = position;
                 return;
             }
-            Device.Thread.ExecuteOnMainThread(() => List?.SmoothScrollToPositionFromTop(position, top, animated ? 250 : 0));
+            Scroll(position, top, animated);
         }
 
         public void ScrollToEnd(bool animated)
         {
-            _touchScroll = false;
-            Device.Thread.ExecuteOnMainThread(() => List?.SmoothScrollToPositionFromTop(List.Count - 1, 0, animated ? 250 : 0));
+            Scroll(List.Count - 1, 0, animated);
         }
 
         public void ScrollToHome(bool animated)
+        {
+            Scroll(0, 0, animated);
+        }
+
+        private void Scroll(int position, int offset, bool animated)
         {
             _touchScroll = false;
             if (List == null)
@@ -297,7 +301,18 @@ namespace iFactr.Droid
                 _index = 0;
                 return;
             }
-            Device.Thread.ExecuteOnMainThread(() => List.SmoothScrollToPositionFromTop(0, 0, animated ? 250 : 0));
+            if (animated)
+            {
+                Device.Thread.ExecuteOnMainThread(() => List.SmoothScrollToPositionFromTop(position, offset, 250));
+            }
+            else
+            {
+                Device.Thread.ExecuteOnMainThread(() =>
+                {
+                    List.SetSelectionFromTop(position, offset);
+                    List.ClearChoices();
+                });
+            }
         }
         private bool _touchScroll = true;
 
