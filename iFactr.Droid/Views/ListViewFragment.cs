@@ -51,7 +51,7 @@ namespace iFactr.Droid
             var search = DroidFactory.GetNativeObject<SearchBox>(SearchBox, nameof(SearchBox));
             AttachSearchView(search, layout);
 
-            List = MXContainer.Resolve<ListView>(Activity);
+            List = MXContainer.Resolve<ListView>(Activity) ?? new ListView(Activity);
             List.OnItemSelectedListener = this;
             List.OnItemClickListener = this;
             List.OnItemLongClickListener = this;

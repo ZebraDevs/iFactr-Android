@@ -1,7 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <resources>
-  <style name="ApplicationTheme" parent="android:Theme.Holo.Light.DarkActionBar"></style>
-  <style name="Theme.Application" parent="android:Theme.Material.Light.DarkActionBar"></style>
-  <style name="ApplicationTheme.Light" parent="android:Theme.Holo.Light"></style>
-  <style name="Theme.Application.Light" parent="android:Theme.Material.Light"></style>
+  <style name="ApplicationTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+    <item name="android:alertDialogTheme">@style/Theme.Application.Dialog.Alert</item>
+  </style>
+  <style name="Theme.Application.Light" parent="android:Theme.Holo.Light">
+    <item name="android:alertDialogTheme">@style/Theme.Application.Dialog.Alert</item>
+  </style>
+  <style name="ApplicationTheme.Dark" parent="android:Theme.Holo"></style>
+  <style name="Theme.Application" parent="android:Theme.Holo.Light.DarkActionBar">
+    <item name="android:alertDialogTheme">@style/Theme.Application.Dialog.Alert</item>
+  </style>
+  <style name="ApplicationTheme.Light" parent="android:Theme.Holo.Light">
+    <item name="android:alertDialogTheme">@style/Theme.Application.Dialog.Alert</item>
+  </style>
+  <style name="Theme.Application.Dark" parent="android:Theme.Holo"></style>
+  <style name="Theme.Application.Dialog.Alert" parent="@android:style/Theme.Holo.Light.Dialog">
+    <item name="android:borderlessButtonStyle">@style/Widget.Application.Button.Borderless</item>
+    <item name="android:windowBackground">@android:color/transparent</item>
+    <item name="android:windowContentOverlay">@null</item>
+    <item name="android:windowMinWidthMajor">@android:dimen/dialog_min_width_major</item>
+    <item name="android:windowMinWidthMinor">@android:dimen/dialog_min_width_minor</item>
+  </style>
+  <style name="Widget.Application.Button.Borderless" parent="@android:style/Widget.Holo.Button.Borderless">
+    <item name="android:textColor">@android:color/black</item>
+    <item name="android:textAppearance">@android:style/TextAppearance.Holo.Medium</item>
+  </style>
 </resources>

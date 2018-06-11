@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+  <style name="ApplicationTheme" parent="android:Theme.Holo.Light.DarkActionBar"></style>
+  <style name="ApplicationTheme.Light" parent="android:Theme.Holo.Light"></style>
+  <style name="ApplicationTheme.Dark" parent="android:Theme.Holo"></style>
+  <style name="Theme.Application" parent="android:Theme.Material.Light.DarkActionBar"></style>
+  <style name="Theme.Application.Light" parent="android:Theme.Material.Light"></style>
+  <style name="Theme.Application.Dark" parent="android:Theme.Material"></style>
+</resources>
