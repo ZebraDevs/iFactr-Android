@@ -214,15 +214,7 @@ namespace iFactr.Droid
                     TabItems.ElementAtOrDefault(position)?.Title ?? Title
                     : title;
             holder.Subtitle.Text = TabItems.ElementAtOrDefault(position)?.Title ?? string.Empty;
-            if (TitleColor.IsDefaultColor)
-            {
-                var id = DroidFactory.MainActivity.Resources.GetIdentifier("action_bar_title", "id", "android");
-                var titleText = DroidFactory.MainActivity.FindViewById<TextView>(id);
-                var color = new Android.Graphics.Color(titleText.CurrentTextColor);
-                holder.Title.SetTextColor(color);
-                holder.Subtitle.SetTextColor(color);
-            }
-            else
+            if (!TitleColor.IsDefaultColor)
             {
                 holder.Title.SetTextColor(TitleColor.ToColor());
                 holder.Subtitle.SetTextColor(TitleColor.ToColor());
