@@ -244,7 +244,7 @@ namespace iFactr.Droid
             for (var i = first; i <= last; i++)
             {
                 var view = List.GetChildAt(i - first);
-                var cell = view as ICell;
+                var cell = RetrieveCell(view);
                 if (cell != null) yield return cell.Pair as ICell ?? cell;
                 else if (view != null) yield return new CustomItemContainer(view);
             }
@@ -330,7 +330,7 @@ namespace iFactr.Droid
         public void OnItemClick(AdapterView parent, View view, int position, long id)
         {
             Device.Log.Platform($"Cell clicked at position {position}");
-            var cell = view as IGridCell;
+            var cell = RetrieveCell(view) as IGridCell;
             List.DescendantFocusability = Events.HasEvent(cell, nameof(cell.Selected)) ? DescendantFocusability.AfterDescendants : DescendantFocusability.BeforeDescendants;
             cell?.Select();
         }
@@ -339,9 +339,20 @@ namespace iFactr.Droid
         {
             Device.Log.Platform($"Cell long-clicked at position {position}");
             var args = new EventHandledEventArgs();
-            var cell = view as ICell;
+            var cell = RetrieveCell(view);
             LongClicked?.Invoke(cell?.Pair ?? cell, args);
             return args.IsHandled;
+        }
+
+        private ICell RetrieveCell(View view)
+        {
+            var cell = view as ICell;
+            if (cell == null)
+            {
+                cell = Device.Reflector.GetProperties(view.GetType())
+                    .Select(p => p.GetValue(view) as ICell).FirstOrDefault(p => p != null);
+            }
+            return cell;
         }
 
         public event EventHandler<EventHandledEventArgs> LongClicked;
