@@ -14,6 +14,8 @@ namespace iFactr.Droid
 {
     public class Accessory : Android.Widget.Button, IControl
     {
+        private static readonly int HitArea = (int)(Cell.StandardCellHeight * DroidFactory.DisplayScale);
+
         public virtual string FontPath
         {
             get
@@ -87,10 +89,12 @@ namespace iFactr.Droid
             SetTextColor(_foregroundColor.ToColor());
             SetTypeface(Typeface.CreateFromFile(FontPath), TypefaceStyle.Normal);
             Text = Glyph;
-
-            var size = (int)(Cell.StandardCellHeight * DroidFactory.DisplayScale);
-            SetWidth(size);
-            SetHeight(size);
+            SetIncludeFontPadding(false);
+            SetPadding(0, 0, 0, 0);
+            SetMinHeight(0);
+            SetMinWidth(0);
+            SetWidth(HitArea);
+            SetHeight(HitArea);
             SetTextSize(ComplexUnitType.Dip, 22);
         }
 
@@ -191,9 +195,8 @@ namespace iFactr.Droid
 
         public Size Measure(Size constraints)
         {
-            var size = (int)(Cell.StandardCellHeight * DroidFactory.DisplayScale);
-            var widthSpec = MeasureSpec.MakeMeasureSpec(size, MeasureSpecMode.AtMost);
-            var heightSpec = MeasureSpec.MakeMeasureSpec(size, MeasureSpecMode.AtMost);
+            var widthSpec = MeasureSpec.MakeMeasureSpec(HitArea, MeasureSpecMode.Exactly);
+            var heightSpec = MeasureSpec.MakeMeasureSpec(HitArea, MeasureSpecMode.Exactly);
             Measure(widthSpec, heightSpec);
 
             return new Size(MeasuredWidth, MeasuredHeight);
@@ -213,15 +216,9 @@ namespace iFactr.Droid
         public void SetLocation(Point location, Size size)
         {
             var left = location.X;
-            var right = location.X + MeasuredWidth;
+            var right = location.X + HitArea;
             var top = location.Y;
-            var bottom = location.Y + MeasuredHeight;
-            var off = (MeasuredHeight - size.Height) / 2;
-            if (off > 0)
-            {
-                top -= off;
-                bottom -= off;
-            }
+            var bottom = location.Y + HitArea;
 
             Layout((int)left, (int)top, (int)right, (int)bottom);
         }
