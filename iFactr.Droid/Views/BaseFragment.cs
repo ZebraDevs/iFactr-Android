@@ -227,6 +227,11 @@ namespace iFactr.Droid
 
         protected void ResetOrientation()
         {
+            if (DroidFactory.Instance.LargeFormFactor)
+            {
+                Activity.RequestedOrientation = ScreenOrientation.Unspecified;
+                return;
+            }
             switch (PreferredOrientations)
             {
                 case PreferredOrientation.Portrait:
