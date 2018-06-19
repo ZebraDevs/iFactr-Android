@@ -316,7 +316,7 @@ namespace iFactr.Droid
             RemoveView(concreteControl);
         }
 
-        internal void SetSubmission(string id, string value)
+        public void SetSubmission(string id, string value)
         {
             if (id == null || Parent == null) return;
             var values = GetSubmissions();

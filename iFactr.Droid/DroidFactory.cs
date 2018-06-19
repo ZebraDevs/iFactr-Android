@@ -360,7 +360,7 @@ namespace iFactr.Droid
             }
         }
 
-        internal static void OrientationChanged(iApp.Orientation orientation)
+        public static void OrientationChanged(iApp.Orientation orientation)
         {
             if (IsInitialized)
                 Instance.OnOrientationChanged(orientation);
@@ -444,6 +444,7 @@ namespace iFactr.Droid
 
             Register<IGridBase>(typeof(Grid));
             Register<ISwitch>(typeof(CheckBox), "CheckBox");
+            Register<ISwitch>(typeof(RadioButton), "RadioButton");
             Register<IImage>(typeof(AnimationView), "AnimationView", filePath =>
             {
                 var file = filePath.ElementAtOrDefault(0)?.ToString();

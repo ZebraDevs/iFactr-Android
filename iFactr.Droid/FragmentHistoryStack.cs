@@ -380,7 +380,7 @@ namespace iFactr.Droid
             }
         }
 
-        internal static bool IsIndependentDetail
+        public static bool IsIndependentDetail
         {
             get
             {

@@ -8,6 +8,7 @@ using Android.Runtime;
 using Button = Android.Widget.Button;
 using Android.Content;
 using iFactr.Core;
+using MonoCross.Navigation;
 
 namespace iFactr.Droid
 {
@@ -53,7 +54,8 @@ namespace iFactr.Droid
 
         private void Initialize()
         {
-            _button = new Button(Context) { Gravity = GravityFlags.Center, };
+            _button = MXContainer.Resolve<Button>(Context) ?? new Button(Context);
+            _button.Gravity = GravityFlags.Center;
             AddView(_button, new LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent, GravityFlags.Fill));
             _button.SetPadding(4 * Padding, 2 * Padding, 4 * Padding, 0);
             _button.SetSingleLine(true);
