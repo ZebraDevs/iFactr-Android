@@ -13,6 +13,7 @@ using MonoCross.Utilities;
 using iFactr.UI;
 using IMenu = Android.Views.IMenu;
 using iFactr.Core;
+using System.Reflection;
 
 namespace iFactr.Droid
 {
@@ -144,7 +145,7 @@ namespace iFactr.Droid
 
         private void UpdateMenu()
         {
-            SetHasOptionsMenu((OutputPane < Pane.Popover || Activity is PopoverActivity) && Menu != null && Menu.ButtonCount > 0);
+            SetHasOptionsMenu(Menu != null && Menu.ButtonCount > 0 && (OutputPane < Pane.Popover || PopoverActivity.Instance != null));
         }
 
         #endregion
@@ -446,7 +447,8 @@ namespace iFactr.Droid
                 if (OutputPane == Pane.Popover)
                 {
                     PopoverFragment.UpdateTitle();
-                    PopoverActivity.UpdateTitle();
+                    var titleUpdater = PopoverActivity.Instance?.GetType().GetMethod("UpdateTitle", BindingFlags.Static | BindingFlags.NonPublic);
+                    titleUpdater?.Invoke(null, null);
                 }
                 else if (DroidFactory.Tabs == null || !DroidFactory.Tabs.TabItems.Any())
                 {

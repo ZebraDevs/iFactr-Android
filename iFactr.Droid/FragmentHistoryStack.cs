@@ -9,6 +9,7 @@ using MonoCross.Utilities;
 using iFactr.UI;
 using iFactr.Core;
 using MonoCross.Navigation;
+using System.Reflection;
 
 namespace iFactr.Droid
 {
@@ -301,7 +302,7 @@ namespace iFactr.Droid
                             var dialog = (DialogFragment)Fragment.Instantiate(DroidFactory.MainActivity, name);
                             dialog.Show(DroidFactory.MainActivity.FragmentManager, null);
                         }
-                        else DroidFactory.MainActivity.StartActivity(typeof(PopoverActivity));
+                        else DroidFactory.MainActivity.StartActivity(MXContainer.Resolve<Type>("Popover"));
                         return;
                     }
                 }
@@ -329,7 +330,8 @@ namespace iFactr.Droid
             if (Context.ActivePane == Pane.Popover)
             {
                 PopoverFragment.UpdateTitle();
-                PopoverActivity.UpdateTitle();
+                var titleUpdater = PopoverActivity.Instance?.GetType().GetMethod("UpdateTitle", BindingFlags.Static | BindingFlags.NonPublic);
+                titleUpdater?.Invoke(null, null);
             }
             else if (DroidFactory.Tabs == null || !DroidFactory.Tabs.TabItems.Any())
             {
@@ -343,7 +345,7 @@ namespace iFactr.Droid
             #endregion
         }
 
-        internal static void SetHomeUp(Pane updatedPane)
+        public static void SetHomeUp(Pane updatedPane)
         {
             var activity = PopoverActivity.Instance ?? DroidFactory.MainActivity;
             if (activity.ActionBar == null) return;

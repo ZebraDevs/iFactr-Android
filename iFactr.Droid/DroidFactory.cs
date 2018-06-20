@@ -165,7 +165,7 @@ namespace iFactr.Droid
             base.Style.SecondarySubTextColor = MainActivity.Resources.GetColor(Resource.Color.SecondarySubTextColor).ToColor();
         }
 
-        internal static T GetNativeObject<T>(object obj, string objName)
+        public static T GetNativeObject<T>(object obj, string objName)
             where T : class
         {
             if (obj == null)
@@ -439,6 +439,7 @@ namespace iFactr.Droid
             Register<IToolbar>(typeof(Toolbar));
             Register<IToolbarButton>(typeof(ToolbarButton));
             Register<IToolbarSeparator>(typeof(ToolbarSeparator));
+            RegisterSingleton<Type>((object)typeof(PopoverActivity), "Popover");
 
             #region Custom control registration for Android factory
 

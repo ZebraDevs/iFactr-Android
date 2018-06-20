@@ -107,7 +107,7 @@ namespace iFactr.Droid
             for (var p = Pane.Popover; p > Pane.Tabs; p--)
             {
                 var check = PaneManager.Instance.FromNavContext(p)?.CurrentView;
-                var menu = (check as IListView)?.Menu ?? (check as IGridView)?.Menu;
+                var menu = (check as IListView)?.Menu ?? (check as IGridView)?.Menu ?? (check as IBrowserView)?.Menu;
                 if (!Equals(menu?.Pair, this) && menu != this) continue;
                 view = check;
                 break;
@@ -130,7 +130,7 @@ namespace iFactr.Droid
             if (menu == null)
             {
                 var popover = PaneManager.Instance.FromNavContext(Pane.Popover)?.CurrentView;
-                menu = (popover as IListView)?.Menu ?? (popover as IGridView)?.Menu;
+                menu = (popover as IListView)?.Menu ?? (popover as IGridView)?.Menu ?? (popover as IBrowserView)?.Menu;
             }
             if (menu == null || menu.ButtonCount <= 0) return;
             var items = new string[menu.ButtonCount];

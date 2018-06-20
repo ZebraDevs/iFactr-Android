@@ -11,7 +11,7 @@ namespace iFactr.Droid
     [Activity(WindowSoftInputMode = SoftInput.AdjustPan)]
     public class PopoverActivity : BaseActivity
     {
-        public static PopoverActivity Instance { get; private set; }
+        public static Activity Instance { get; set; }
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -41,7 +41,7 @@ namespace iFactr.Droid
             FragmentHistoryStack.SetHomeUp(Pane.Popover);
 
             var style = Stack.CurrentLayer == null ? iApp.Instance.Style : Stack.CurrentLayer.LayerStyle;
-            Instance.UpdateHeader(style.HeaderColor);
+            ((PopoverActivity)Instance).UpdateHeader(style.HeaderColor);
 
             var popoverView = Stack.CurrentView as IView;
             var title = popoverView == null ? iApp.Instance.Title : popoverView.Title;
