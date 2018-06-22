@@ -54,9 +54,9 @@ namespace iFactr.Droid
 
         private void Initialize()
         {
-            _button = MXContainer.Resolve<Button>(Context) ?? new Button(Context);
-            _button.Gravity = GravityFlags.Center;
+            _button = MXContainer.Resolve<Button>(GetType().Name, Context) ?? new Button(Context);
             AddView(_button, new LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent, GravityFlags.Fill));
+            _button.Gravity = GravityFlags.Center;
             _button.SetPadding(4 * Padding, 2 * Padding, 4 * Padding, 0);
             _button.SetSingleLine(true);
             _button.Ellipsize = TextUtils.TruncateAt.End;

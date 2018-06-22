@@ -440,6 +440,7 @@ namespace iFactr.Droid
             Register<IToolbarButton>(typeof(ToolbarButton));
             Register<IToolbarSeparator>(typeof(ToolbarSeparator));
             RegisterSingleton<Type>((object)typeof(PopoverActivity), "Popover");
+            Register<Android.Widget.Button>(typeof(Android.Widget.Button), nameof(ButtonView));
 
             #region Custom control registration for Android factory
 
