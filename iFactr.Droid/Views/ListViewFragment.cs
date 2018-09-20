@@ -1,14 +1,14 @@
-using System;
-using System.Linq;
-using System.Collections.Generic;
 using Android.OS;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
-using MonoCross.Utilities;
 using iFactr.UI;
-using View = Android.Views.View;
 using MonoCross.Navigation;
+using MonoCross.Utilities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using View = Android.Views.View;
 
 namespace iFactr.Droid
 {
@@ -347,10 +347,10 @@ namespace iFactr.Droid
         private ICell RetrieveCell(View view)
         {
             var cell = view as ICell;
-            if (cell == null)
+            while (cell == null && view != null)
             {
-                cell = Device.Reflector.GetProperties(view.GetType())
-                    .Select(p => p.GetValue(view) as ICell).FirstOrDefault(p => p != null);
+                view = view.Parent as View;
+                cell = view as ICell;
             }
             return cell;
         }

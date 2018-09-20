@@ -199,23 +199,21 @@ namespace iFactr.Droid
         internal static bool HandleUrl(Link link, bool createBrowserView, IMXView fromView)
         {
             if (link == null) return false;
+
+            var queryIndex = link.Address.IndexOf('?');
+            if (queryIndex > 0)
+            {
+                var queryString = link.Address.Substring(queryIndex).Split('#')[0];
+                link.Parameters = HttpUtility.ParseQueryString(queryString).ToDictionary(k => k.Key, v => v.Value);
+            }
+
             if (link.Address.StartsWith("app:"))
             {
                 link.Address = link.Address.Substring(4);
             }
 
-            var uri = link.Address;
-            var queryIndex = uri.IndexOf('?');
-            if (queryIndex > 0)
-            {
-                var queryString = uri.Substring(queryIndex).Split('#')[0];
-                link.Address = uri.Remove(queryIndex);
-                link.Parameters = HttpUtility.ParseQueryString(queryString).ToDictionary(k => k.Key, v => v.Value);
-            }
-
             if (link.Address.StartsWith(MailToExtensions.Scheme))
             {
-                link.Address = uri;
                 MailToExtensions.Launch(link);
             }
             else if (link.Address.StartsWith(TelephoneExtensions.Scheme) || link.Address.StartsWith(TelephoneExtensions.CallToScheme))
@@ -249,10 +247,9 @@ namespace iFactr.Droid
             else if (link.Address.StartsWith("http") && link.RequestType != RequestType.NewWindow)
             {
                 if (!createBrowserView && string.IsNullOrEmpty(link.ConfirmationText)) return false;
-                link.Address = uri;
                 Navigate(link, fromView);
             }
-            else if (!(iApp.Instance.NavigationMap.MatchUrl(link.Address)?.Controller is Core.Layers.Browser))
+            else if (iApp.Instance.NavigationMap.MatchUrl(link.Address)?.Controller != null)
             {
                 Navigate(link, fromView);
             }
@@ -266,6 +263,14 @@ namespace iFactr.Droid
                 var externalIntent = Intent.ParseUri(link.Address, IntentUriType.Scheme);
                 externalIntent.AddFlags(ActivityFlags.NewTask);
 
+                if (MainActivity.PackageManager.QueryIntentActivities(externalIntent, PackageInfoFlags.MatchDefaultOnly).Count > 0)
+                {
+                    MainActivity.StartActivity(externalIntent);
+                    return true;
+                }
+
+                // Launch external app by package name
+                externalIntent = MainActivity.PackageManager.GetLaunchIntentForPackage(link.Address);
                 if (MainActivity.PackageManager.QueryIntentActivities(externalIntent, PackageInfoFlags.MatchDefaultOnly).Count > 0)
                 {
                     MainActivity.StartActivity(externalIntent);

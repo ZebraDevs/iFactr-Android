@@ -204,14 +204,13 @@ namespace iFactr.Droid
 
             public HtmlTextWebChomeClient(IView parent)
             {
-                if (parent == null) throw new ArgumentNullException(nameof(parent));
-                _parentView = parent;
+                _parentView = parent ?? throw new ArgumentNullException(nameof(parent));
             }
 
             public override void OnReceivedTitle(WebView view, string title)
             {
                 base.OnReceivedTitle(view, title);
-                if (title != null && !title.StartsWith("about:"))
+                if (title != null && !title.StartsWith("about:") && !title.StartsWith("data:"))
                 {
                     _parentView.Title = ((Browser)view).ErrorOccured ? iApp.Instance.Title : title;
                 }
