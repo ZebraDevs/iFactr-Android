@@ -494,7 +494,7 @@ namespace iFactr.Droid
 
         public bool Equals(IView other)
         {
-            return _pair == null ? other == null : Pair.Equals(other.Pair);
+            return _pair == null ? base.Equals(other) || other == null : Pair.Equals(other.Pair);
         }
 
         public void SetBackground(Color color)
