@@ -177,31 +177,18 @@ namespace iFactr.Droid
         {
             SetSelection(position, true);
         }
+
         public override void SetSelection(int position, bool animate)
         {
             if (position == SelectedIndex && Tag == null)
                 Tag = position;
             base.SetSelection(position, animate);
         }
+
         public void OnItemSelected(AdapterView parent, View view, int position, long id)
         {
             if (Tag != null && (int)Tag != position)
             {
-                var grid = Parent as GridBase;
-                if (grid != null)
-                {
-                    var item = SelectedItem as SelectListFieldItem;
-                    if (item == null)
-                    {
-                        grid.SetSubmission(SubmitKey, StringValue);
-                    }
-                    else
-                    {
-                        grid.SetSubmission(SubmitKey + ".Key", item.Key);
-                        grid.SetSubmission(SubmitKey, item.Value);
-                    }
-                }
-
                 var handler = SelectionChanged;
                 if (handler != null && _oldItem != SelectedItem)
                 {

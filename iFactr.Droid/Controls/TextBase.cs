@@ -84,7 +84,6 @@ namespace iFactr.Droid
             this.OnPropertyChanged(nameof(Text));
             this.OnPropertyChanged(nameof(StringValue));
 
-            (Parent as GridBase)?.SetSubmission(SubmitKey, StringValue);
             OnTextChanged(old, _currentValue);
         }
         private string _currentValue = string.Empty;

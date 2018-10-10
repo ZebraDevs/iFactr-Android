@@ -76,8 +76,6 @@ namespace iFactr.Droid
 
         private void Slider_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            if (Parent is GridBase)
-                ((GridBase)Parent).SetSubmission(SubmitKey, StringValue);
             this.RaiseEvent("ValueChanged", new ValueChangedEventArgs<double>(_oldValue, Value));
             _oldValue = Value;
             this.OnPropertyChanged("Value");

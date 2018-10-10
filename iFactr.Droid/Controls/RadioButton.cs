@@ -81,7 +81,6 @@ namespace iFactr.Droid
 
         private void RadioButton_CheckedChange(object sender, CheckedChangeEventArgs e)
         {
-            (Parent as GridBase)?.SetSubmission(SubmitKey, StringValue);
             this.RaiseEvent("ValueChanged", new ValueChangedEventArgs<bool>(!Value, Value));
             this.RaiseEvent("Clicked", EventArgs.Empty);
             this.OnPropertyChanged("StringValue");

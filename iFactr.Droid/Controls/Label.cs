@@ -120,7 +120,6 @@ namespace iFactr.Droid
             {
                 _constraints = infinitySize;
                 StringValue = Text;
-                (Parent as GridBase)?.SetSubmission(SubmitKey, StringValue);
             }
 
             this.RequestResize();

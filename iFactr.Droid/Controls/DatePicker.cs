@@ -113,7 +113,6 @@ namespace iFactr.Droid
                 _value = value;
 
                 Device.Thread.ExecuteOnMainThread(() => { Text = value?.ToString(DateFormat ?? "d") ?? string.Empty; });
-                (Parent as GridBase)?.SetSubmission(SubmitKey, StringValue);
                 this.OnPropertyChanged();
                 this.OnPropertyChanged(nameof(StringValue));
                 this.RaiseEvent(nameof(DateChanged), new ValueChangedEventArgs<DateTime?>(oldVal, value));

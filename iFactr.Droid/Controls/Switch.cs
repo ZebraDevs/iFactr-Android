@@ -67,7 +67,6 @@ namespace iFactr.Droid
 
         private void Switch_CheckedChange(object sender, CheckedChangeEventArgs e)
         {
-            (Parent as GridBase)?.SetSubmission(SubmitKey, StringValue);
             this.RaiseEvent("ValueChanged", new ValueChangedEventArgs<bool>(!Value, Value));
             this.OnPropertyChanged("StringValue");
             this.OnPropertyChanged("Value");

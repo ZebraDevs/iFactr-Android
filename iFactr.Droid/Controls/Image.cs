@@ -158,7 +158,6 @@ namespace iFactr.Droid
                     this.RequestResize();
                 }
 
-                (base.Parent as GridBase)?.SetSubmission(SubmitKey, StringValue);
                 this.OnPropertyChanged(nameof(StringValue));
                 this.OnPropertyChanged();
             }

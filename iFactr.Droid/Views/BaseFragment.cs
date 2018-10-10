@@ -5,8 +5,10 @@ using Android.OS;
 using Android.Views;
 using Android.Widget;
 using iFactr.Core;
+using iFactr.Core.Forms;
 using iFactr.Core.Layers;
 using iFactr.UI;
+using iFactr.UI.Controls;
 using MonoCross.Utilities;
 using System;
 using System.Collections.Generic;
@@ -267,6 +269,10 @@ namespace iFactr.Droid
 
         public void Submit(Link link)
         {
+            if (link.Parameters == null)
+            {
+                link.Parameters = new Dictionary<string, string>();
+            }
             var layer = _model as iLayer;
             var submitValues = layer != null ? layer.GetFieldValues() : GetSubmissionValues();
 
@@ -287,7 +293,7 @@ namespace iFactr.Droid
             }
 
             var args = new SubmissionEventArgs(link, ValidationErrors);
-            submissionHandler(this, args);
+            submissionHandler(Pair, args);
             if (args.Cancel) { return; }
 
             link.Parameters.AddRange(submitValues);
@@ -300,12 +306,33 @@ namespace iFactr.Droid
 
         public event SubmissionEventHandler Submitting;
 
-        public IDictionary<string, string> GetSubmissionValues()
+        public virtual IDictionary<string, string> GetSubmissionValues()
         {
-            return _submitValues;
+            return new Dictionary<string, string>(_submitValues);
         }
 
-        private readonly Dictionary<string, string> _submitValues = new Dictionary<string, string>();
+        internal void SetSubmitValues(IElementHost parent)
+        {
+            foreach (var control in parent.Children.OfType<IControl>().Where(c => c.ShouldSubmit()))
+            {
+                if (!control.Validate(out string[] errors))
+                {
+                    ValidationErrors[control.SubmitKey] = errors;
+                }
+                else
+                {
+                    ValidationErrors.Remove(control.SubmitKey);
+                }
+
+                if (control is SelectList selectList && selectList.SelectedItem is SelectListFieldItem item)
+                {
+                    _submitValues[control.SubmitKey + ".Key"] = item.Key;
+                }
+                _submitValues[control.SubmitKey] = control.StringValue;
+            }
+        }
+
+        protected readonly Dictionary<string, string> _submitValues = new Dictionary<string, string>();
 
         public ValidationErrorCollection ValidationErrors { get; private set; }
 
@@ -402,6 +429,7 @@ namespace iFactr.Droid
         {
             if (string.IsNullOrEmpty(Title))
                 Title = iApp.Instance.Title;
+            _submitValues.Clear();
             this.RaiseEvent(nameof(Rendering), EventArgs.Empty);
             UpdateMenu();
         }

@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using Android.Content;
 using Android.Runtime;
 using Android.Util;
@@ -10,9 +5,14 @@ using Android.Views;
 using Android.Widget;
 using iFactr.UI;
 using iFactr.UI.Controls;
+using MonoCross.Utilities;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using Size = iFactr.UI.Size;
 using View = Android.Views.View;
-using MonoCross.Utilities;
 
 namespace iFactr.Droid
 {
@@ -96,9 +96,6 @@ namespace iFactr.Droid
             control.Metadata["Parent"] = Pair;
             ((IPairable)(control as GridBase))?.SetBinding(new Binding(nameof(Parent), nameof(Parent)) { Source = this, });
 
-            var submission = control as IControl;
-            if (submission != null) SetSubmission(submission.SubmitKey, submission.StringValue);
-
             OnPropertyChanged(nameof(Children));
         }
 
@@ -174,17 +171,10 @@ namespace iFactr.Droid
             get { return _parent; }
             set
             {
-                if ((value is IGridView || value is IListView) && !Equals(_parent, value))
+                if (!Equals(_parent, value))
                 {
                     _parent = value;
                     OnPropertyChanged(nameof(Parent));
-                }
-                if (_parent == null)
-                    return;
-                var submit = GetSubmissions();
-                foreach (var control in Children.OfType<IControl>().Where(control => control.SubmitKey != null && !submit.ContainsKey(control.SubmitKey)))
-                {
-                    SetSubmission(control.SubmitKey, control.StringValue);
                 }
             }
         }
@@ -314,13 +304,6 @@ namespace iFactr.Droid
         {
             var concreteControl = DroidFactory.GetNativeObject<View>(control, nameof(control));
             RemoveView(concreteControl);
-        }
-
-        public void SetSubmission(string id, string value)
-        {
-            if (id == null || Parent == null) return;
-            var values = GetSubmissions();
-            if (values != null) values[id] = value;
         }
 
         private IDictionary<string, string> GetSubmissions()

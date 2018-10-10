@@ -1,16 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using iFactr.Core;
 using iFactr.UI;
 using iFactr.UI.Controls;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Size = iFactr.UI.Size;
-using iFactr.Core;
 
 namespace iFactr.Droid
 {
@@ -203,6 +203,12 @@ namespace iFactr.Droid
                 }
             }
             return retval;
+        }
+
+        public override IDictionary<string, string> GetSubmissionValues()
+        {
+            SetSubmitValues(this);
+            return base.GetSubmissionValues();
         }
 
         protected override void Invalidate()

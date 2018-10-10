@@ -1,11 +1,11 @@
 ﻿using Android.Content;
 using Android.Runtime;
+using iFactr.Core;
 using iFactr.UI;
-using System;
-using System.Linq;
 using iFactr.UI.Controls;
 using iFactr.UI.Instructions;
-using iFactr.Core;
+using System;
+using System.Linq;
 
 namespace iFactr.Droid
 {
@@ -166,6 +166,11 @@ namespace iFactr.Droid
         {
             AccessorySelected = null;
             Selected = null;
+        }
+
+        protected override void OnDetachedFromWindow()
+        {
+            DroidFactory.GetNativeObject<ListViewFragment>(Parent, nameof(Parent))?.SetSubmitValues(this);
         }
 
         public bool Equals(ICell other)

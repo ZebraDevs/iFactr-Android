@@ -54,7 +54,6 @@ namespace iFactr.Droid
             Font = Font.PreferredButtonFont;
             this.InitializeAttributes(attrs);
             _button.Click += OnClick;
-            PropertyChanged += TitleChanged;
         }
 
         #endregion
@@ -67,13 +66,6 @@ namespace iFactr.Droid
             if (this.RaiseEvent(nameof(Clicked), EventArgs.Empty)) return;
             var view = Parent as GridBase;
             DroidFactory.Navigate(NavigationLink, view?.Parent);
-        }
-
-        private void TitleChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName != nameof(Title)) return;
-            var cell = Parent as GridBase;
-            cell?.SetSubmission(SubmitKey, StringValue);
         }
 
         public override void NullifyEvents()

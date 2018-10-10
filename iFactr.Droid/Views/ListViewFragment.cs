@@ -3,6 +3,7 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using iFactr.UI;
+using iFactr.UI.Controls;
 using MonoCross.Navigation;
 using MonoCross.Utilities;
 using System;
@@ -111,6 +112,16 @@ namespace iFactr.Droid
         {
             base.Render();
             ReloadSections();
+        }
+
+        public override IDictionary<string, string> GetSubmissionValues()
+        {
+            foreach (var cell in GetVisibleCells().OfType<IElementHost>())
+            {
+                SetSubmitValues(cell);
+            }
+
+            return base.GetSubmissionValues();
         }
 
         public override void OnSaveInstanceState(Bundle outState)
