@@ -1,19 +1,19 @@
+using Android.App;
+using Android.Content.PM;
+using Android.Graphics.Drawables;
+using Android.OS;
+using Android.Views;
+using Android.Widget;
+using iFactr.Core;
+using iFactr.Core.Layers;
+using iFactr.UI;
+using MonoCross.Utilities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using Android.Content.PM;
-using Android.OS;
-using Android.App;
-using Android.Graphics.Drawables;
-using Android.Views;
-using Android.Widget;
-using iFactr.Core.Layers;
-using MonoCross.Utilities;
-using iFactr.UI;
-using IMenu = Android.Views.IMenu;
-using iFactr.Core;
 using System.Reflection;
+using IMenu = Android.Views.IMenu;
 
 namespace iFactr.Droid
 {
@@ -482,7 +482,7 @@ namespace iFactr.Droid
 
         public IPairable Pair
         {
-            get { return _pair; }
+            get { return _pair ?? this; }
             set
             {
                 if (_pair != null) return;
@@ -494,7 +494,7 @@ namespace iFactr.Droid
 
         public bool Equals(IView other)
         {
-            return _pair == null ? base.Equals(other) || other == null : Pair.Equals(other.Pair);
+            return _pair == null ? base.Equals(other) || other == null : _pair.Equals(other.Pair);
         }
 
         public void SetBackground(Color color)
