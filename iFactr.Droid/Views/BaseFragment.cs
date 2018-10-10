@@ -311,7 +311,7 @@ namespace iFactr.Droid
             return new Dictionary<string, string>(_submitValues);
         }
 
-        internal void SetSubmitValues(IElementHost parent)
+        protected void SetSubmitValues(IElementHost parent)
         {
             foreach (var control in parent.Children.OfType<IControl>().Where(c => c.ShouldSubmit()))
             {
@@ -324,7 +324,7 @@ namespace iFactr.Droid
                     ValidationErrors.Remove(control.SubmitKey);
                 }
 
-                if (control is SelectList selectList && selectList.SelectedItem is SelectListFieldItem item)
+                if ((control as SelectList)?.SelectedItem is SelectListFieldItem item)
                 {
                     _submitValues[control.SubmitKey + ".Key"] = item.Key;
                 }
@@ -332,7 +332,7 @@ namespace iFactr.Droid
             }
         }
 
-        protected readonly Dictionary<string, string> _submitValues = new Dictionary<string, string>();
+        private readonly Dictionary<string, string> _submitValues = new Dictionary<string, string>();
 
         public ValidationErrorCollection ValidationErrors { get; private set; }
 

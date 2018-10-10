@@ -13,7 +13,7 @@ using View = Android.Views.View;
 
 namespace iFactr.Droid
 {
-    public class ListViewFragment : BaseFragment, IListView, AdapterView.IOnItemSelectedListener, AdapterView.IOnItemClickListener, AdapterView.IOnItemLongClickListener
+    public class ListViewFragment : BaseFragment, IListView, AdapterView.IOnItemSelectedListener, AdapterView.IOnItemClickListener, AdapterView.IOnItemLongClickListener, AbsListView.IRecyclerListener
     {
         public ListView List { get; private set; }
 
@@ -72,6 +72,7 @@ namespace iFactr.Droid
                 if (e.ScrollState == ScrollState.Idle) _touchScroll = true;
                 RequestFocusHomeUp = false;
             };
+            List.SetRecyclerListener(this);
             SeparatorColor = _separatorColor;
             layout.AddView(List, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MatchParent, LinearLayout.LayoutParams.MatchParent));
             if (search == null || search.FocusRequested)
@@ -122,6 +123,11 @@ namespace iFactr.Droid
             }
 
             return base.GetSubmissionValues();
+        }
+
+        public void OnMovedToScrapHeap(View view)
+        {
+            SetSubmitValues(view as IElementHost);
         }
 
         public override void OnSaveInstanceState(Bundle outState)
