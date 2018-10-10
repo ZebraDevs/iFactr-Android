@@ -152,8 +152,10 @@ namespace iFactr.Droid
 
         public void Select()
         {
-            var listViewFragment = Parent as ListViewFragment;
-            if (listViewFragment != null) listViewFragment.SelectedIndex = Metadata.Get<int>("Index");
+            if (Parent is ListViewFragment listViewFragment)
+            {
+                listViewFragment.SelectedIndex = Metadata.Get<int>("Index");
+            }
 
             if (!this.RaiseEvent(nameof(Selected), EventArgs.Empty))
             {
@@ -167,12 +169,7 @@ namespace iFactr.Droid
             AccessorySelected = null;
             Selected = null;
         }
-
-        protected override void OnDetachedFromWindow()
-        {
-            DroidFactory.GetNativeObject<ListViewFragment>(Parent, nameof(Parent))?.SetSubmitValues(this);
-        }
-
+        
         public bool Equals(ICell other)
         {
             var control = other as Cell;
