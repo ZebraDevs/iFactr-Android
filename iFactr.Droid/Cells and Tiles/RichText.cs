@@ -69,7 +69,18 @@ namespace iFactr.Droid
 
         #endregion
 
-        public IPairable Pair { get; set; }
+        public IPairable Pair
+        {
+            get { return _pair; }
+            set
+            {
+                if (_pair != null || value == null) return;
+                _pair = value;
+                _pair.Pair = this;
+            }
+        }
+        private IPairable _pair;
+
         public bool Equals(ICell other)
         {
             return false;

@@ -1,8 +1,8 @@
-﻿using System;
-using System.ComponentModel;
-using iFactr.UI;
-using Android.Runtime;
+﻿using Android.Runtime;
 using iFactr.Core;
+using iFactr.UI;
+using System;
+using System.ComponentModel;
 
 namespace iFactr.Droid
 {
@@ -75,6 +75,7 @@ namespace iFactr.Droid
                 if (_pair != null || value == null) return;
                 _pair = value;
                 _pair.Pair = this;
+                this.OnPropertyChanged();
             }
         }
         private IPairable _pair;
@@ -99,7 +100,7 @@ namespace iFactr.Droid
         {
             var selected = Selected;
             if (selected == null) return false;
-            selected(Pair, EventArgs.Empty);
+            selected(Pair ?? this, EventArgs.Empty);
             return true;
         }
     }

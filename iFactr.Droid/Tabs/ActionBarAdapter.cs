@@ -1,18 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
 using Android.App;
 using Android.Content;
 using Android.Graphics.Drawables;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using iFactr.Core;
 using iFactr.Core.Layers;
 using iFactr.UI;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using Object = Java.Lang.Object;
 using View = Android.Views.View;
-using iFactr.Core;
 
 namespace iFactr.Droid
 {
@@ -234,11 +234,22 @@ namespace iFactr.Droid
 
         #region IView members
 
-        public IPairable Pair { get; set; }
+        public IPairable Pair
+        {
+            get { return _pair; }
+            set
+            {
+                if (_pair != null || value == null) return;
+                _pair = value;
+                _pair.Pair = this;
+                this.OnPropertyChanged();
+            }
+        }
+        private IPairable _pair;
 
         public bool Equals(IView other)
         {
-            return Pair.Equals(other.Pair);
+            return _pair == null ? base.Equals(other) || other == null : _pair.Equals(other.Pair);
         }
 
         public Color HeaderColor

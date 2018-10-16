@@ -502,6 +502,7 @@ namespace iFactr.Droid
                 if (_pair != null) return;
                 _pair = value;
                 _pair.Pair = this;
+                this.OnPropertyChanged();
             }
         }
         private IPairable _pair;

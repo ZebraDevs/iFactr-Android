@@ -100,8 +100,10 @@ namespace iFactr.Droid
         public override bool OnOptionsItemSelected(IMenuItem item)
         {
             var index = item.ItemId % byte.MaxValue;
-            var active = PaneManager.Instance.FromNavContext(OutputPane).CurrentView as IView;
-            if (!Equals(active) || index >= Menu.ButtonCount) return false;
+            if (!Equals(PaneManager.Instance.FromNavContext(OutputPane).CurrentView) || index >= Menu.ButtonCount)
+            {
+                return false;
+            }
 
             TextBase.CurrentFocus?.Blur(false);
 
@@ -293,7 +295,7 @@ namespace iFactr.Droid
             }
 
             var args = new SubmissionEventArgs(link, ValidationErrors);
-            submissionHandler(Pair, args);
+            submissionHandler(Pair ?? this, args);
             if (args.Cancel) { return; }
 
             link.Parameters.AddRange(submitValues);
@@ -510,12 +512,13 @@ namespace iFactr.Droid
 
         public IPairable Pair
         {
-            get { return _pair ?? this; }
+            get { return _pair; }
             set
             {
-                if (_pair != null) return;
+                if (_pair != null || value == null) return;
                 _pair = value;
                 _pair.Pair = this;
+                this.OnPropertyChanged();
             }
         }
         private IPairable _pair;

@@ -1,15 +1,15 @@
-﻿using System;
+﻿using Android.App;
+using Android.Content;
+using Android.Runtime;
+using Android.Views;
+using iFactr.Core;
+using iFactr.UI;
+using MonoCross.Navigation;
+using MonoCross.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Android.App;
-using Android.Content;
-using Android.Views;
-using iFactr.UI;
 using IMenu = iFactr.UI.IMenu;
-using Android.Runtime;
-using MonoCross.Utilities;
-using MonoCross.Navigation;
-using iFactr.Core;
 
 namespace iFactr.Droid
 {
@@ -50,6 +50,7 @@ namespace iFactr.Droid
                 if (_pair != null || value == null) return;
                 _pair = value;
                 _pair.Pair = this;
+                this.OnPropertyChanged();
             }
         }
         private IPairable _pair;
@@ -107,7 +108,10 @@ namespace iFactr.Droid
             for (var p = Pane.Popover; p > Pane.Tabs; p--)
             {
                 var check = PaneManager.Instance.FromNavContext(p)?.CurrentView;
-                var menu = (check as IListView)?.Menu ?? (check as IGridView)?.Menu ?? (check as IBrowserView)?.Menu;
+                var menu = (check as IListView)?.Menu ??
+                    (check as IGridView)?.Menu ??
+                    (check as IBrowserView)?.Menu ??
+                    (check as BaseFragment)?.Menu;
                 if (!Equals(menu?.Pair, this) && menu != this) continue;
                 view = check;
                 break;
@@ -130,7 +134,10 @@ namespace iFactr.Droid
             if (menu == null)
             {
                 var popover = PaneManager.Instance.FromNavContext(Pane.Popover)?.CurrentView;
-                menu = (popover as IListView)?.Menu ?? (popover as IGridView)?.Menu ?? (popover as IBrowserView)?.Menu;
+                menu = (popover as IListView)?.Menu ??
+                    (popover as IGridView)?.Menu ??
+                    (popover as IBrowserView)?.Menu ??
+                    (popover as BaseFragment)?.Menu;
             }
             if (menu == null || menu.ButtonCount <= 0) return;
             var items = new string[menu.ButtonCount];

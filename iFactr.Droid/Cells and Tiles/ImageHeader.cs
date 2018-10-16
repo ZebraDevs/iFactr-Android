@@ -1,7 +1,7 @@
-using System;
 using Android.Content;
 using Android.Runtime;
 using iFactr.UI;
+using System;
 
 namespace iFactr.Droid
 {
@@ -62,18 +62,10 @@ namespace iFactr.Droid
         public string Path
         {
             get { return _image.FilePath; }
-            set { _image.FilePath = value; }
-        }
-
-        public new IPairable Pair
-        {
-            get { return _pair; }
             set
-            { 
-                if (_pair != null || value == null) return;
-                _pair = value;
-                _pair.Pair = this;
-                this.OnPropertyChanged();
+            {
+                _image.FilePath = value;
+                OnPropertyChanged();
             }
         }
     }
