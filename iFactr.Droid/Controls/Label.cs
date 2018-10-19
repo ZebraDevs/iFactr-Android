@@ -116,9 +116,10 @@ namespace iFactr.Droid
             var ellipsized = _text != base.Text && base.Text != null && base.Text.EndsWith(Ellipsis);
             var infinitySize = new Size(double.PositiveInfinity, double.PositiveInfinity);
 
-            if (!ellipsized && StringValue != Text)
+            if (!ellipsized && StringValue != base.Text)
             {
                 _constraints = infinitySize;
+                _text = base.Text;
                 StringValue = Text;
             }
 

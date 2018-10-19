@@ -1,11 +1,11 @@
-using System;
-using System.Linq;
 using Android.Util;
 using Android.Views;
-using MonoCross.Utilities;
 using iFactr.UI;
 using iFactr.UI.Controls;
 using MonoCross.Navigation;
+using MonoCross.Utilities;
+using System;
+using System.Linq;
 using Size = iFactr.UI.Size;
 using View = Android.Views.View;
 
