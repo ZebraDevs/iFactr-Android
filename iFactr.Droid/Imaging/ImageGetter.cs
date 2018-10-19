@@ -192,9 +192,10 @@ namespace iFactr.Droid
 
             var downloads = PendingDownloads[url];
             PendingDownloads.Remove(url);
+            var retval = drawable?.Bitmap == null ? null : new BitmapDrawable(Resources, drawable?.Bitmap);
             foreach (var iv in downloads)
             {
-                iv.Invoke(new BitmapDrawable(Resources, drawable?.Bitmap), url, false);
+                iv.Invoke(retval, url, false);
             }
         }
 
