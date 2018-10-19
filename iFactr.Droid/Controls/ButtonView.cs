@@ -1,13 +1,11 @@
-using System;
-using System.ComponentModel;
 using Android.Content;
 using Android.Graphics;
-using Android.Graphics.Drawables;
 using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using iFactr.UI;
 using iFactr.UI.Controls;
+using System;
 using Color = iFactr.UI.Color;
 using Point = iFactr.UI.Point;
 using Size = iFactr.UI.Size;
@@ -112,7 +110,7 @@ namespace iFactr.Droid
                 ImageGetter.SetDrawable(_image?.FilePath, (bitmap, url, fromCache) =>
                 {
                     if (bitmap != null && url == _image?.FilePath)
-                        _button.SetCompoundDrawables(new BitmapDrawable(ImageGetter.Resources, bitmap), null, null, null);
+                        _button.SetCompoundDrawables(bitmap, null, null, null);
                 });
                 this.OnPropertyChanged();
             }

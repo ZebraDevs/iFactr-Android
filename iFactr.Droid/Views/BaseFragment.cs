@@ -1,6 +1,5 @@
 using Android.App;
 using Android.Content.PM;
-using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
@@ -66,7 +65,7 @@ namespace iFactr.Droid
                 {
                     if (bitmap != null && url == source)
                     {
-                        item.SetIcon(new BitmapDrawable(ImageGetter.Resources, bitmap));
+                        item.SetIcon(bitmap);
                     }
                 });
             }

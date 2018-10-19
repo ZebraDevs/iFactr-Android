@@ -1,9 +1,8 @@
-using System;
-using Android.Graphics.Drawables;
+using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using iFactr.UI;
-using Android.Runtime;
+using System;
 
 namespace iFactr.Droid
 {
@@ -34,7 +33,7 @@ namespace iFactr.Droid
                 ImageGetter.SetDrawable(_imagePath, (bitmap, url, fromCache) =>
                 {
                     if (bitmap != null && url == _imagePath)
-                        _button.SetCompoundDrawables(new BitmapDrawable(ImageGetter.Resources, bitmap), null, null, null);
+                        _button.SetCompoundDrawables(bitmap, null, null, null);
                 });
 
                 this.OnPropertyChanged();

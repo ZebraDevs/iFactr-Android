@@ -1,3 +1,12 @@
+using Android.Graphics;
+using Android.Graphics.Drawables;
+using Android.Text;
+using Android.Util;
+using iFactr.Core;
+using iFactr.UI;
+using MonoCross.Navigation;
+using MonoCross.Utilities;
+using MonoCross.Utilities.Storage;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -6,22 +15,13 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
-using Android.Graphics;
-using Android.Graphics.Drawables;
-using Android.Text;
-using Android.Util;
-using MonoCross.Utilities;
-using MonoCross.Utilities.Storage;
-using iFactr.UI;
-using iFactr.Core;
-using MonoCross.Navigation;
 
 namespace iFactr.Droid
 {
     public class ImageGetter : Java.Lang.Object, Html.IImageGetter
     {
         public static Android.Content.Res.Resources Resources { get; }
-        private static readonly SerializableDictionary<string, List<Action<Bitmap, string, bool>>> PendingDownloads = new SerializableDictionary<string, List<Action<Bitmap, string, bool>>>();
+        private static readonly SerializableDictionary<string, List<Action<Drawable, string, bool>>> PendingDownloads = new SerializableDictionary<string, List<Action<Drawable, string, bool>>>();
 
         static ImageGetter()
         {
@@ -44,14 +44,14 @@ namespace iFactr.Droid
             var mre = new ManualResetEventSlim();
             SetDrawable(source, (result, url, fromCache) =>
             {
-                drawable = new BitmapDrawable(Resources, result);
+                drawable = result;
                 mre.Set();
             });
             mre.Wait(500);
             return drawable;
         }
 
-        public static async void SetDrawable(string url, Action<Bitmap, string, bool> callback, ImageCreationOptions options = ImageCreationOptions.None, TimeSpan cacheDuration = default(TimeSpan))
+        public static async void SetDrawable(string url, Action<Drawable, string, bool> callback, ImageCreationOptions options = ImageCreationOptions.None, TimeSpan cacheDuration = default(TimeSpan))
         {
             if (callback == null) return;
 
@@ -68,7 +68,7 @@ namespace iFactr.Droid
             var droidImage = cached as ImageData;
             if (droidImage != null)
             {
-                callback.Invoke(droidImage.Bitmap, url, true);
+                callback.Invoke(new BitmapDrawable(Resources, droidImage.Bitmap), url, true);
                 return;
             }
 
@@ -84,17 +84,20 @@ namespace iFactr.Droid
                 var resourceId = storage.ResourceFromFileName(url);
                 if (resourceId > 0)
                 {
-                    bitmap = ((BitmapDrawable)Resources.GetDrawable(resourceId)).Bitmap;
+                    var draw = Resources.GetDrawable(resourceId);
+                    bitmap = (draw as BitmapDrawable)?.Bitmap;
+                    if (bitmap != null)
+                    {
+                        Device.ImageCache.Add(url, new ImageData(bitmap, url));
+                    }
+                    callback.Invoke(draw, url, false);
+                    return;
                 }
                 else if ((assetStream = storage.GetAsset(url)) != null)
                 {
                     bitmap = BitmapFactory.DecodeStream(assetStream);
-                }
-
-                if (bitmap != null)
-                {
                     Device.ImageCache.Add(url, new ImageData(bitmap, url));
-                    callback.Invoke(bitmap, url, false);
+                    callback.Invoke(new BitmapDrawable(Resources, bitmap), url, false);
                     return;
                 }
             }
@@ -109,7 +112,7 @@ namespace iFactr.Droid
                 return;
             }
 
-            PendingDownloads[url] = new List<Action<Bitmap, string, bool>> { callback };
+            PendingDownloads[url] = new List<Action<Drawable, string, bool>> { callback };
             ImageData drawable = null;
 
             await Task.Factory.StartNew(() =>
@@ -191,7 +194,7 @@ namespace iFactr.Droid
             PendingDownloads.Remove(url);
             foreach (var iv in downloads)
             {
-                iv.Invoke(drawable?.Bitmap, url, false);
+                iv.Invoke(new BitmapDrawable(Resources, drawable?.Bitmap), url, false);
             }
         }
 

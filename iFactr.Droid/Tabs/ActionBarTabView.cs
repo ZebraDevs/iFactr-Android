@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using iFactr.UI;
-using System.ComponentModel;
-using Android.App;
-using iFactr.Core.Layers;
+﻿using Android.App;
 using Android.Graphics.Drawables;
 using iFactr.Core;
+using iFactr.Core.Layers;
+using iFactr.UI;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 
 namespace iFactr.Droid
 {
@@ -177,7 +177,7 @@ namespace iFactr.Droid
             ImageGetter.SetDrawable(imagePath, (bitmap, url, fromCache) =>
             {
                 if (bitmap != null && url == imagePath)
-                    DroidFactory.MainActivity.ActionBar.SetBackgroundDrawable(new BitmapDrawable(ImageGetter.Resources, bitmap));
+                    DroidFactory.MainActivity.ActionBar.SetBackgroundDrawable(bitmap);
             });
         }
 

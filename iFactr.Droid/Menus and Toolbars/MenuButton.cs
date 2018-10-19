@@ -1,8 +1,7 @@
-﻿using System;
-using Android.Graphics.Drawables;
+﻿using Android.Runtime;
 using Android.Views;
 using iFactr.UI;
-using Android.Runtime;
+using System;
 
 namespace iFactr.Droid
 {
@@ -92,7 +91,7 @@ namespace iFactr.Droid
                 ImageGetter.SetDrawable(_imagePath, (bitmap, url, fromCache) =>
                 {
                     if (bitmap != null && url == _imagePath)
-                        Item.SetIcon(new BitmapDrawable(ImageGetter.Resources, bitmap));
+                        Item.SetIcon(bitmap);
                 });
             }
         }

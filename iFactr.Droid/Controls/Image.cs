@@ -1,16 +1,16 @@
-﻿using System;
-using System.ComponentModel;
-using Android.Content;
+﻿using Android.Content;
 using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
-using MonoCross;
-using MonoCross.Utilities;
 using iFactr.UI;
 using iFactr.UI.Controls;
+using MonoCross;
+using MonoCross.Utilities;
+using System;
+using System.ComponentModel;
 using Point = iFactr.UI.Point;
 using Size = iFactr.UI.Size;
 
@@ -75,6 +75,11 @@ namespace iFactr.Droid
         private void Initialize(IAttributeSet attrs = null)
         {
             this.InitializeAttributes(attrs);
+            string file = attrs?.GetAttributeValue(ElementExtensions.XmlNamespace, "filePath");
+            if (file != null)
+            {
+                FilePath = file;
+            }
         }
 
         #endregion
@@ -139,16 +144,19 @@ namespace iFactr.Droid
 
                 if (_filePath != null)
                 {
-                    ImageGetter.SetDrawable(_filePath, (b, url, fromCache) =>
+                    ImageGetter.SetDrawable(_filePath, (d, url, fromCache) =>
                     {
                         if (url != _filePath) return;
-                        if (b == null && (FilePath.StartsWith("/") || FilePath.StartsWith("file:")))
+                        if (d == null && (FilePath.StartsWith("/") || FilePath.StartsWith("file:")))
                         {
-                            b = ImageGetter.LoadFromStorage(_filePath, 0, 0);
+                            var b = ImageGetter.LoadFromStorage(_filePath, 0, 0);
                             Device.ImageCache.Add(_filePath, new ImageData(b, _filePath));
+                            SetImageDrawable(new BitmapDrawable(ImageGetter.Resources, b));
                         }
-
-                        SetImageDrawable(new BitmapDrawable(ImageGetter.Resources, b));
+                        else
+                        {
+                            SetImageDrawable(d);
+                        }
                         Loaded?.Invoke(this, EventArgs.Empty);
                         this.RequestResize();
                     }, Options);

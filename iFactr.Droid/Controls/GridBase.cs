@@ -57,11 +57,58 @@ namespace iFactr.Droid
             ChildViewRemoved += GridBase_ChildViewRemoved;
 
             if (attrs == null) return;
-            var rowCount = attrs.GetAttributeIntValue("http://schemas.android.com/apk/lib/ifactr", "rows", 0);
-            if (rowCount > 0) this.SetRows(rowCount);
-            var columnCount = attrs.GetAttributeIntValue("http://schemas.android.com/apk/lib/ifactr", "columns", 0);
-            if (columnCount > 0) this.SetColumns(columnCount);
-            string padding = attrs.GetAttributeValue("http://schemas.android.com/apk/lib/ifactr", "padding");
+            var rowCountString = attrs.GetAttributeValue(ElementExtensions.XmlNamespace, "rows");
+            var rows = rowCountString.Split(',');
+            if (rows.Length == 1 && int.TryParse(rows[0], out int rowCount))
+            {
+                this.SetRows(rowCount);
+            }
+            else if (rows.Length > 0)
+            {
+                foreach (var row in rows)
+                {
+                    if (row.Contains('*'))
+                    {
+                        double.TryParse(row.Replace("*", string.Empty), out double height);
+                        Rows.Add(new Row(height == 0 ? 1 : height, LayoutUnitType.Star));
+                    }
+                    else if (row.ToUpper().StartsWith("A"))
+                    {
+                        Rows.Add(Row.AutoSized);
+                    }
+                    else
+                    {
+                        var height = double.Parse(row);
+                        Rows.Add(new Row(height, LayoutUnitType.Absolute));
+                    }
+                }
+            }
+            var columns = attrs.GetAttributeValue(ElementExtensions.XmlNamespace, "columns").Split(',');
+            if (columns.Length == 1 && int.TryParse(columns[0], out int columnCount))
+            {
+                this.SetColumns(columnCount);
+            }
+            else if (columns.Length > 0)
+            {
+                foreach (var column in columns)
+                {
+                    if (column.Contains('*'))
+                    {
+                        double.TryParse(column.Replace("*", string.Empty), out double width);
+                        Columns.Add(new Column(width == 0 ? 1 : width, LayoutUnitType.Star));
+                    }
+                    else if (column.ToUpper().StartsWith("A"))
+                    {
+                        Columns.Add(Column.AutoSized);
+                    }
+                    else
+                    {
+                        var width = double.Parse(column);
+                        Columns.Add(new Column(width, LayoutUnitType.Absolute));
+                    }
+                }
+            }
+            string padding = attrs.GetAttributeValue(ElementExtensions.XmlNamespace, "padding");
             if (!string.IsNullOrEmpty(padding))
             {
                 var padValues = padding.Split(',').Select(p => p.TryParseDouble()).ToList();
@@ -80,6 +127,12 @@ namespace iFactr.Droid
                         throw new FormatException("Invalid padding format: " + padding);
                 }
             }
+
+            var left = ElementExtensions.ParseThickness(attrs, "paddingLeft", (int)Padding.Left);
+            var top = ElementExtensions.ParseThickness(attrs, "paddingTop", (int)Padding.Top);
+            var right = ElementExtensions.ParseThickness(attrs, "paddingRight", (int)Padding.Right);
+            var bottom = ElementExtensions.ParseThickness(attrs, "paddingBottom", (int)Padding.Bottom);
+            Padding = new Thickness(left, top, right, bottom);
         }
 
         #endregion
@@ -192,10 +245,17 @@ namespace iFactr.Droid
         {
             int parentHeight;
             int parentWidth;
-            if (Parent == null) return;
-            var basicGrid = !(this is GridCell) && !(this is Grid);
-            var fragment = (BaseFragment)Parent;
-            var frame = DroidFactory.MainActivity.FindViewById<FrameLayout>(((FragmentHistoryStack)fragment.Stack).FragmentId);
+            View frame = null;
+            var fragmentId = ((Parent as BaseFragment)?.Stack as FragmentHistoryStack)?.FragmentId;
+            if (fragmentId != null)
+            {
+                frame = DroidFactory.MainActivity.FindViewById<FrameLayout>(fragmentId.Value);
+            }
+            else
+            {
+                frame = base.Parent as View;
+            }
+
             if (frame != null)
             {
                 parentWidth = frame.MeasuredWidth;
@@ -209,6 +269,7 @@ namespace iFactr.Droid
                 parentHeight = (int)(parentWidth * .75);
             }
 
+            var basicGrid = !(this is GridCell) && !(this is Grid);
             if (MinWidth < 1) { MinWidth = parentWidth; }
             if (MaxWidth < MinWidth) { MaxWidth = MinWidth; }
             if (basicGrid && MinHeight < 1 && parentHeight > 0) { MinHeight = parentHeight; }

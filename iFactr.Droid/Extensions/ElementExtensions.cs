@@ -137,22 +137,26 @@ namespace iFactr.Droid
                 }
             }
 
-            var left = ParseMargin(attrs, "marginLeft", (int)element.Margin.Left);
-            var top = ParseMargin(attrs, "marginTop", (int)element.Margin.Top);
-            var right = ParseMargin(attrs, "marginRight", (int)element.Margin.Right);
-            var bottom = ParseMargin(attrs, "marginBottom", (int)element.Margin.Bottom);
+            var left = ParseThickness(attrs, "marginLeft", (int)element.Margin.Left);
+            var top = ParseThickness(attrs, "marginTop", (int)element.Margin.Top);
+            var right = ParseThickness(attrs, "marginRight", (int)element.Margin.Right);
+            var bottom = ParseThickness(attrs, "marginBottom", (int)element.Margin.Bottom);
             element.Margin = new Thickness(left, top, right, bottom);
         }
 
-        private static int ParseMargin(IAttributeSet attrs, string margin, int currentMargin)
+        public static double ParseThickness(IAttributeSet attrs, string thickness, int currentThickness)
         {
-            var marginLeftAttr = attrs.GetAttributeValue(XmlNamespace, margin);
-            if (marginLeftAttr == null) return currentMargin;
-            var marginLeft = marginLeftAttr.TrimEnd('s', 'd', 'p', 'x').TryParseInt32(currentMargin);
-            if (marginLeft != currentMargin) return marginLeft;
-            var marginRes = attrs.GetAttributeResourceValue(XmlNamespace, margin, 0);
-            if (marginRes > 0) marginLeft = (int)(DroidFactory.MainActivity.Resources.GetDimension(marginRes) / DroidFactory.DisplayScale);
-            return marginLeft;
+            var thicknessRes = attrs.GetAttributeResourceValue(XmlNamespace, thickness, 0);
+            if (thicknessRes > 0)
+            {
+                return (int)(DroidFactory.MainActivity.Resources.GetDimension(thicknessRes) / DroidFactory.DisplayScale);
+            }
+            var thicknessAttr = attrs.GetAttributeValue(XmlNamespace, thickness);
+            if (thicknessAttr != null && double.TryParse(thicknessAttr.TrimEnd('s', 'd', 'p', 'x'), out double value))
+            {
+                return value;
+            }
+            return currentThickness;
         }
     }
 }

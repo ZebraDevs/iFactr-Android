@@ -1,6 +1,5 @@
 using Android.App;
 using Android.Content;
-using Android.Graphics.Drawables;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
@@ -320,7 +319,7 @@ namespace iFactr.Droid
             ImageGetter.SetDrawable(imagePath, (bitmap, url, fromCache) =>
             {
                 if (bitmap != null && url == imagePath)
-                    DroidFactory.MainActivity.ActionBar.SetBackgroundDrawable(new BitmapDrawable(ImageGetter.Resources, bitmap));
+                    DroidFactory.MainActivity.ActionBar.SetBackgroundDrawable(bitmap);
             });
         }
 

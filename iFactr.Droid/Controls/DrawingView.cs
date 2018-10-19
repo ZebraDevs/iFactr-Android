@@ -1,18 +1,19 @@
+using Android.Content;
+using Android.Graphics;
+using Android.Graphics.Drawables;
+using Android.Runtime;
+using Android.Views;
+using Android.Widget;
+using iFactr.Core;
+using iFactr.UI;
+using MonoCross.Utilities;
 using System;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Android.Content;
-using Android.Views;
-using Android.Graphics;
-using Android.Widget;
-using MonoCross.Utilities;
-using iFactr.UI;
 using Path = Android.Graphics.Path;
-using Android.Runtime;
 using View = Android.Views.View;
-using iFactr.Core;
 
 namespace iFactr.Droid
 {
@@ -385,7 +386,7 @@ namespace iFactr.Droid
                 }
                 else if (url == imagePath)
                 {
-                    SetBackground(drawable);
+                    SetBackground((drawable as BitmapDrawable)?.Bitmap);
                 }
             });
         }
