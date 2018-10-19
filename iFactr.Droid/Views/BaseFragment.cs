@@ -528,6 +528,11 @@ namespace iFactr.Droid
             return _pair == null ? base.Equals(other) || other == null : _pair.Equals(other.Pair);
         }
 
+        public override bool Equals(object obj)
+        {
+            return Equals(obj as IView);
+        }
+
         public void SetBackground(Color color)
         {
             _background = color.ToString();

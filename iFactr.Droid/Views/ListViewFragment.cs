@@ -127,7 +127,11 @@ namespace iFactr.Droid
 
         public void OnMovedToScrapHeap(View view)
         {
-            SetSubmitValues(view as IElementHost);
+            var parent = (view as IPairable)?.Pair as IElementHost ?? view as IElementHost;
+            if (parent != null)
+            {
+                SetSubmitValues(parent);
+            }
         }
 
         public override void OnSaveInstanceState(Bundle outState)
