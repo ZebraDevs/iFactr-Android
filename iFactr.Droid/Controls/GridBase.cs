@@ -58,12 +58,12 @@ namespace iFactr.Droid
 
             if (attrs == null) return;
             var rowCountString = attrs.GetAttributeValue(ElementExtensions.XmlNamespace, "rows");
-            var rows = rowCountString.Split(',');
-            if (rows.Length == 1 && int.TryParse(rows[0], out int rowCount))
+            var rows = rowCountString?.Split(',');
+            if (rows?.Length == 1 && int.TryParse(rows[0], out int rowCount))
             {
                 this.SetRows(rowCount);
             }
-            else if (rows.Length > 0)
+            else if (rows?.Length > 0)
             {
                 foreach (var row in rows)
                 {
@@ -83,12 +83,12 @@ namespace iFactr.Droid
                     }
                 }
             }
-            var columns = attrs.GetAttributeValue(ElementExtensions.XmlNamespace, "columns").Split(',');
-            if (columns.Length == 1 && int.TryParse(columns[0], out int columnCount))
+            var columns = attrs.GetAttributeValue(ElementExtensions.XmlNamespace, "columns")?.Split(',');
+            if (columns?.Length == 1 && int.TryParse(columns[0], out int columnCount))
             {
                 this.SetColumns(columnCount);
             }
-            else if (columns.Length > 0)
+            else if (columns?.Length > 0)
             {
                 foreach (var column in columns)
                 {

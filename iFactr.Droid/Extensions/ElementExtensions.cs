@@ -43,8 +43,10 @@ namespace iFactr.Droid
 
         public static void InitializeAttributes(this IElement element, IAttributeSet attrs)
         {
-            var view = element as View;
-            if (view != null && view.Id > 0) element.ID = DroidFactory.MainActivity.Resources.GetResourceEntryName(view.Id);
+            if (element is View view && view.Id > 0)
+            {
+                element.ID = DroidFactory.MainActivity.Resources.GetResourceEntryName(view.Id);
+            }
 
             if (attrs == null) return;
             const int adj = Element.AutoLayoutIndex + 1;
@@ -87,37 +89,10 @@ namespace iFactr.Droid
                 }
             }
 
-            string foregroundColor = attrs.GetAttributeValue(XmlNamespace, "foregroundColor");
-            if (foregroundColor != null)
-            {
-                var colorProp = Device.Reflector.GetProperty(typeof(Color), foregroundColor);
-                if (colorProp != null)
-                {
-                    var value = colorProp.GetValue(Color.Transparent);
-                    Device.Reflector.GetProperty(element.GetType(), "ForegroundColor")?.SetValue(element, value);
-                }
-                else
-                {
-                    Device.Reflector.GetProperty(element.GetType(), "ForegroundColor")?.SetValue(element, new Color(foregroundColor));
-                }
-            }
+            element.SetColor(attrs, "BackgroundColor");
+            element.SetColor(attrs, "ForegroundColor");
 
-            string backgroundColor = attrs.GetAttributeValue(XmlNamespace, "backgroundColor");
-            if (backgroundColor != null)
-            {
-                var colorProp = Device.Reflector.GetProperty(typeof(Color), backgroundColor);
-                if (colorProp != null)
-                {
-                    var value = colorProp.GetValue(Color.Transparent);
-                    Device.Reflector.GetProperty(element.GetType(), "BackgroundColor")?.SetValue(element, value);
-                }
-                else
-                {
-                    Device.Reflector.GetProperty(element.GetType(), "BackgroundColor")?.SetValue(element, new Color(backgroundColor));
-                }
-            }
-
-            string margin = attrs.GetAttributeValue(XmlNamespace, "margin");
+            var margin = attrs.GetAttributeValue(XmlNamespace, "margin");
             if (!string.IsNullOrEmpty(margin))
             {
                 var padValues = margin.Split(',').Select(p => p.TryParseDouble()).ToList();
@@ -142,6 +117,9 @@ namespace iFactr.Droid
             var right = ParseThickness(attrs, "marginRight", (int)element.Margin.Right);
             var bottom = ParseThickness(attrs, "marginBottom", (int)element.Margin.Bottom);
             element.Margin = new Thickness(left, top, right, bottom);
+
+            var submitKey = attrs.GetAttributeValue(XmlNamespace, "submitKey");
+            if (submitKey != null && element is IControl control) control.SubmitKey = submitKey;
         }
 
         public static double ParseThickness(IAttributeSet attrs, string thickness, int currentThickness)
@@ -157,6 +135,24 @@ namespace iFactr.Droid
                 return value;
             }
             return currentThickness;
+        }
+
+        public static void SetColor(this IElement element, IAttributeSet attrs, string propertyName)
+        {
+            string color = attrs.GetAttributeValue(XmlNamespace, char.ToLowerInvariant(propertyName[0]) + propertyName.Substring(1));
+            if (color != null)
+            {
+                var colorProp = Device.Reflector.GetProperty(typeof(Color), color);
+                if (colorProp != null)
+                {
+                    var value = colorProp.GetValue(Color.Transparent);
+                    Device.Reflector.GetProperty(element.GetType(), propertyName)?.SetValue(element, value);
+                }
+                else
+                {
+                    Device.Reflector.GetProperty(element.GetType(), propertyName)?.SetValue(element, new Color(color));
+                }
+            }
         }
     }
 }
