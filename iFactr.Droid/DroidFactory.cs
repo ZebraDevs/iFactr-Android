@@ -198,7 +198,7 @@ namespace iFactr.Droid
 
         internal static bool HandleUrl(Link link, bool createBrowserView, IMXView fromView)
         {
-            if (link == null) return false;
+            if (link?.Address == null) return false;
 
             var queryIndex = link.Address.IndexOf('?');
             if (queryIndex > 0)

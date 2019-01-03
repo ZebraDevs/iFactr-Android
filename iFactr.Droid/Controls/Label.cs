@@ -574,7 +574,14 @@ namespace iFactr.Droid
         }
         private string _id;
 
-        object IElement.Parent => Parent;
+        object IElement.Parent
+        {
+            get
+            {
+                var parent = Parent;
+                return (parent as IPairable)?.Pair ?? parent ?? Metadata.Get<object>("Parent");
+            }
+        }
 
         /// <summary>
         /// Gets the abstract or native object that is paired with this instance.

@@ -312,12 +312,13 @@ namespace iFactr.Droid
                 iApp.CurrentNavContext.ActivePane = Context.ActivePane;
                 iApp.CurrentNavContext.ActiveLayer = view.GetModel() as iLayer;
 
-                var activity = PopoverActivity.Instance ?? DroidFactory.MainActivity;
                 try
                 {
-                    var transaction = (popoverManager ?? activity.FragmentManager).BeginTransaction();
-                    transaction.Replace(FragmentId, fragment);
-                    transaction.CommitAllowingStateLoss();
+                    (popoverManager ?? DroidFactory.MainActivity.FragmentManager)
+                        .BeginTransaction()
+                        .DisallowAddToBackStack()
+                        .Replace(FragmentId, fragment)
+                        .CommitAllowingStateLoss();
                 }
                 catch (Exception e)
                 {

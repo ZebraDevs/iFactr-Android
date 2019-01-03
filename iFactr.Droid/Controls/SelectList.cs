@@ -6,7 +6,6 @@ using Android.Content;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using iFactr.Core.Forms;
 using iFactr.UI;
 using iFactr.UI.Controls;
 using System.Collections.Generic;
@@ -455,7 +454,14 @@ namespace iFactr.Droid
         }
         private string _id;
 
-        object IElement.Parent => Parent;
+        object IElement.Parent
+        {
+            get
+            {
+                var parent = Parent;
+                return (parent as IPairable)?.Pair ?? parent ?? Metadata.Get<object>("Parent");
+            }
+        }
 
         public IPairable Pair
         {

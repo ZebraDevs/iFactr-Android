@@ -1,17 +1,17 @@
-﻿using System;
-using System.ComponentModel;
-using Android.App;
+﻿using Android.App;
+using Android.Content;
 using Android.Graphics;
+using Android.Runtime;
+using Android.Util;
 using Android.Views;
 using iFactr.UI;
 using iFactr.UI.Controls;
+using MonoCross.Utilities;
+using System;
+using System.ComponentModel;
 using Button = Android.Widget.Button;
 using Color = iFactr.UI.Color;
 using Point = iFactr.UI.Point;
-using Android.Runtime;
-using Android.Content;
-using Android.Util;
-using MonoCross.Utilities;
 using Size = iFactr.UI.Size;
 
 namespace iFactr.Droid
@@ -392,7 +392,14 @@ namespace iFactr.Droid
         }
         private string _id;
 
-        object IElement.Parent => Parent;
+        object IElement.Parent
+        {
+            get
+            {
+                var parent = Parent;
+                return (parent as IPairable)?.Pair ?? parent ?? Metadata.Get<object>("Parent");
+            }
+        }
 
         public IPairable Pair
         {

@@ -244,7 +244,14 @@ namespace iFactr.Droid
         }
         private string _id;
 
-        object IElement.Parent => ((Android.Views.View)this).Parent;
+        object IElement.Parent
+        {
+            get
+            {
+                var parent = Parent;
+                return (parent as IPairable)?.Pair ?? parent ?? Metadata.Get<object>("Parent");
+            }
+        }
 
         public MetadataCollection Metadata => _metadata ?? (_metadata = new MetadataCollection());
         private MetadataCollection _metadata;

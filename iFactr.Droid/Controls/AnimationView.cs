@@ -1,21 +1,21 @@
-﻿using System;
-using System.ComponentModel;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using Android.App;
 using Android.Content;
 using Android.Graphics;
 using Android.Runtime;
 using Android.Util;
 using Android.Views;
-using MonoCross;
-using MonoCross.Utilities;
 using iFactr.UI;
 using iFactr.UI.Controls;
+using MonoCross;
+using MonoCross.Utilities;
+using MonoCross.Utilities.Storage;
+using System;
+using System.ComponentModel;
+using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using Point = iFactr.UI.Point;
 using Size = iFactr.UI.Size;
-using Android.App;
-using MonoCross.Utilities.Storage;
 
 namespace iFactr.Droid
 {
@@ -547,7 +547,14 @@ namespace iFactr.Droid
         }
         private string _id;
 
-        public new object Parent => base.Parent ?? Metadata.Get<object>("Parent");
+        object IElement.Parent
+        {
+            get
+            {
+                var parent = Parent;
+                return (parent as IPairable)?.Pair ?? parent ?? Metadata.Get<object>("Parent");
+            }
+        }
 
         public IPairable Pair
         {

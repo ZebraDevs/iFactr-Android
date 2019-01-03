@@ -167,7 +167,14 @@ namespace iFactr.Droid
 
         public string ID { get; set; }
 
-        object IElement.Parent => Parent;
+        object IElement.Parent
+        {
+            get
+            {
+                var parent = Parent;
+                return (parent as IPairable)?.Pair ?? parent ?? Metadata.Get<object>("Parent");
+            }
+        }
 
         public MetadataCollection Metadata => _metadata ?? (_metadata = new MetadataCollection());
         private MetadataCollection _metadata;
