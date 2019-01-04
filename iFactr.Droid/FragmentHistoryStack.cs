@@ -1,14 +1,14 @@
+using Android.App;
+using Android.OS;
+using iFactr.Core;
+using iFactr.Core.Layers;
+using iFactr.Core.Styles;
+using iFactr.UI;
+using MonoCross.Navigation;
+using MonoCross.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Android.App;
-using Android.OS;
-using iFactr.Core.Layers;
-using iFactr.Core.Styles;
-using MonoCross.Utilities;
-using iFactr.UI;
-using iFactr.Core;
-using MonoCross.Navigation;
 using System.Reflection;
 
 namespace iFactr.Droid
@@ -311,19 +311,14 @@ namespace iFactr.Droid
 
                 iApp.CurrentNavContext.ActivePane = Context.ActivePane;
                 iApp.CurrentNavContext.ActiveLayer = view.GetModel() as iLayer;
-
-                try
-                {
-                    (popoverManager ?? DroidFactory.MainActivity.FragmentManager)
-                        .BeginTransaction()
-                        .DisallowAddToBackStack()
-                        .Replace(FragmentId, fragment)
-                        .CommitAllowingStateLoss();
-                }
-                catch (Exception e)
-                {
-                    iApp.Log.Error(e);
-                }
+                var fragmentManager = popoverManager ?? DroidFactory.MainActivity.FragmentManager;
+                var originalFragment = fragmentManager.FindFragmentById(FragmentId);
+                var transaction = fragmentManager.BeginTransaction();
+                transaction.DisallowAddToBackStack();
+                if (originalFragment != null)
+                    transaction.Remove(originalFragment);
+                transaction.Add(FragmentId, fragment);
+                transaction.CommitAllowingStateLoss();
             }
 
             #region Update screen titles
