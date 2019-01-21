@@ -316,9 +316,9 @@ namespace iFactr.Droid
         public void SetBackground(string imagePath, ContentStretch stretch)
         {
             if (DroidFactory.MainActivity.ActionBar == null) return;
-            ImageGetter.SetDrawable(imagePath, (bitmap, url, fromCache) =>
+            ImageGetter.SetDrawable(imagePath, (bitmap, url) =>
             {
-                if (bitmap != null && url == imagePath)
+                if (url == imagePath)
                     DroidFactory.MainActivity.ActionBar.SetBackgroundDrawable(bitmap);
             });
         }

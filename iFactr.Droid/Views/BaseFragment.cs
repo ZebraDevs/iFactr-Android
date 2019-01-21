@@ -61,9 +61,9 @@ namespace iFactr.Droid
                 var item = menu.Add((int)OutputPane, itemId, (int)OutputPane, Device.Resources.GetString("Menu"));
                 item.SetShowAsAction(ShowAsAction.Always);
                 const string source = "ic_menu_dark.png";
-                ImageGetter.SetDrawable(source, (bitmap, url, fromCache) =>
+                ImageGetter.SetDrawable(source, (bitmap, url) =>
                 {
-                    if (bitmap != null && url == source)
+                    if (url == source)
                     {
                         item.SetIcon(bitmap);
                     }

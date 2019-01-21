@@ -21,20 +21,11 @@ namespace iFactr.Droid
     public class ImageGetter : Java.Lang.Object, Html.IImageGetter
     {
         public static Android.Content.Res.Resources Resources { get; }
-        private static readonly SerializableDictionary<string, List<Action<Drawable, string, bool>>> PendingDownloads = new SerializableDictionary<string, List<Action<Drawable, string, bool>>>();
+        private static readonly SerializableDictionary<string, List<Action<Drawable, string>>> PendingDownloads = new SerializableDictionary<string, List<Action<Drawable, string>>>();
 
         static ImageGetter()
         {
-            var context = AndroidDevice.Instance.Context;
-            var metrics = new DisplayMetrics();
-            context.WindowManager.DefaultDisplay.GetMetrics(metrics);
-            Resources = new Android.Content.Res.Resources(context.Assets, metrics, context.Resources.Configuration);
-
-            foreach (var f in Device.File.GetFileNames(Environment.GetFolderPath(Environment.SpecialFolder.Personal))
-                .Where(file => file.EndsWith(".urlimage") && DateTime.UtcNow > new FileInfo(file).LastWriteTimeUtc))
-            {
-                Device.File.Delete(f);
-            }
+            Resources = DroidFactory.MainActivity.Resources;
         }
 
         public Drawable GetDrawable(string source)
@@ -42,22 +33,22 @@ namespace iFactr.Droid
             if (string.IsNullOrWhiteSpace(source)) return null;
             Drawable drawable = null;
             var mre = new ManualResetEventSlim();
-            SetDrawable(source, (result, url, fromCache) =>
+            SetDrawable(source, (result, url) =>
             {
                 drawable = result;
                 mre.Set();
             });
-            mre.Wait(500);
+            mre.Wait(2000);
             return drawable;
         }
 
-        public static async void SetDrawable(string url, Action<Drawable, string, bool> callback, ImageCreationOptions options = ImageCreationOptions.None, TimeSpan cacheDuration = default(TimeSpan))
+        public static void SetDrawable(string url, Action<Drawable, string> callback, ImageCreationOptions options = ImageCreationOptions.None, TimeSpan cacheDuration = default(TimeSpan))
         {
             if (callback == null) return;
 
             if (string.IsNullOrEmpty(url))
             {
-                callback.Invoke(null, url, false);
+                callback.Invoke(null, url);
                 return;
             }
 
@@ -65,44 +56,18 @@ namespace iFactr.Droid
 
             var skipCache = (options & ImageCreationOptions.IgnoreCache) == ImageCreationOptions.IgnoreCache;
             var cached = skipCache ? null : Device.ImageCache.Get(url);
-            var droidImage = cached as ImageData;
-            if (droidImage != null)
+            if (cached is ImageData droidImage)
             {
-                callback.Invoke(new BitmapDrawable(Resources, droidImage.Bitmap), url, true);
+                callback.Invoke(new BitmapDrawable(Resources, droidImage.Bitmap), url);
                 return;
             }
 
             #endregion
 
-            #region Try to parse assets and resources syncronously
-
-            var storage = (AndroidFile)Device.File;
-            if (!url.StartsWith("data"))
+            if (cacheDuration == default(TimeSpan))
             {
-                Stream assetStream;
-                Bitmap bitmap = null;
-                var resourceId = storage.ResourceFromFileName(url);
-                if (resourceId > 0)
-                {
-                    var draw = Resources.GetDrawable(resourceId);
-                    bitmap = (draw as BitmapDrawable)?.Bitmap;
-                    if (bitmap != null)
-                    {
-                        Device.ImageCache.Add(url, new ImageData(bitmap, url));
-                    }
-                    callback.Invoke(draw, url, false);
-                    return;
-                }
-                else if ((assetStream = storage.GetAsset(url)) != null)
-                {
-                    bitmap = BitmapFactory.DecodeStream(assetStream);
-                    Device.ImageCache.Add(url, new ImageData(bitmap, url));
-                    callback.Invoke(new BitmapDrawable(Resources, bitmap), url, false);
-                    return;
-                }
+                cacheDuration = Timeout.InfiniteTimeSpan;
             }
-
-            #endregion
 
             //Check to see if another view is already waiting for this url so we don't download it again
             var currentDownload = PendingDownloads.GetValueOrDefault(url);
@@ -111,92 +76,95 @@ namespace iFactr.Droid
                 currentDownload.Add(callback);
                 return;
             }
-
-            PendingDownloads[url] = new List<Action<Drawable, string, bool>> { callback };
-            ImageData drawable = null;
-
-            await Task.Factory.StartNew(() =>
+            else
             {
-                var baseDir = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-                var cacheFile = System.IO.Path.Combine(baseDir, url.GetHashCode().ToString(CultureInfo.InvariantCulture).Replace("-", "N") + ".urlimage");
-                if (storage.Exists(cacheFile))
+                PendingDownloads[url] = new List<Action<Drawable, string>> { callback };
+            }
+
+            Device.Thread.Start(() =>
+            {
+                var storage = (AndroidFile)Device.File;
+                var cacheFile = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal),
+                    url.GetHashCode().ToString(CultureInfo.InvariantCulture).Replace("-", "N") + ".urlimage");
+
+                Bitmap bitmap = null;
+                Stream assetStream;
+                Drawable drawable = null;
+                var resourceId = 0;
+
+                if (url.StartsWith("data:"))
+                {
+                    // Load data URIs like files
+                    if (!storage.Exists(cacheFile))
+                    {
+                        storage.Save(cacheFile, ImageUtility.DecodeImageFromDataUri(url, out string ext));
+                    }
+                }
+                else if ((resourceId = storage.ResourceFromFileName(url)) > 0)
+                {
+                    drawable = Resources.GetDrawable(resourceId);
+                }
+                else if ((assetStream = storage.GetAsset(url)) != null)
+                {
+                    bitmap = BitmapFactory.DecodeStream(assetStream);
+                }
+                else if (cached != null)
+                {
+                    var bytes = cached.GetBytes();
+                    if (bytes != null && bytes.Length > 0)
+                    {
+                        bitmap = BitmapFactory.DecodeByteArray(bytes, 0, bytes.Length, new BitmapFactory.Options
+                        {
+                            InDensity = (int)DisplayMetricsDensity.Default,
+                            InTargetDensity = (int)((int)DisplayMetricsDensity.Default * DroidFactory.DisplayScale),
+                        });
+                    }
+                }
+                else if (!storage.Exists(url) && (!storage.Exists(cacheFile) || new FileInfo(cacheFile).LastWriteTimeUtc > DateTime.UtcNow - cacheDuration))
                 {
                     try
                     {
-                        if (cacheDuration == default(TimeSpan)) cacheDuration = Timeout.InfiniteTimeSpan;
-                        if (cacheDuration == Timeout.InfiniteTimeSpan)
+                        var uri = Java.Net.URI.Create(url);
+                        var bytes = string.IsNullOrEmpty(uri.Scheme) ? null : Device.Network.GetBytes(url);
+                        if (bytes != null && bytes.Length > 0)
                         {
-                            drawable = new ImageData(LoadFromStorage(cacheFile, 0, 0), cacheFile);
-                        }
-                        else
-                        {
-                            Device.Log.Debug("Refreshing Expired File in Cache: " + cacheFile);
+                            storage.Save(cacheFile, bytes);
                         }
                     }
                     catch (Exception ex)
                     {
-                        Device.Log.Debug("File Cache Exception " + ex);
+                        Device.Log.Error("Image download failed", ex);
                     }
                 }
-
-                if (drawable == null)
+                else
                 {
-                    byte[] bytes = null;
+                    bitmap = LoadFromStorage(url, 0, 0);
+                }
 
-                    if (cached != null)
-                    {
-                        bytes = cached.GetBytes();
-                    }
-                    else if (url.StartsWith("data:"))
-                    {
-                        string ext;
-                        bytes = ImageUtility.DecodeImageFromDataUri(url, out ext);
-                        cacheFile = null;
-                    }
-                    else if (!storage.Exists(url))
-                    {
-                        try
-                        {
-                            var uri = Java.Net.URI.Create(url);
-                            bytes = string.IsNullOrEmpty(uri.Scheme) ? null : Device.Network.GetBytes(url);
-                            if (bytes == null || bytes.Length == 0)
-                            {
-                                Device.Log.Warn("Image load failed: {0}", url);
-                            }
-                            else
-                            {
-                                storage.Save(cacheFile, bytes);
-                            }
-                        }
-                        catch (Exception ex)
-                        {
-                            Device.Log.Error("Image download failed", ex);
-                        }
-                    }
+                if (storage.Exists(cacheFile))
+                {
+                    bitmap = LoadFromStorage(cacheFile, 0, 0);
+                }
 
-                    if (bytes != null && bytes.Length > 0)
-                    {
-                        drawable = new ImageData(BitmapFactory.DecodeByteArray(bytes, 0, bytes.Length, new BitmapFactory.Options
-                        {
-                            InDensity = (int)DisplayMetricsDensity.Default,
-                            InTargetDensity = (int)((int)DisplayMetricsDensity.Default * DroidFactory.DisplayScale),
-                        }), cacheFile);
-                    }
+                if (!skipCache && bitmap != null)
+                {
+                    Device.ImageCache.Add(url, new ImageData(bitmap, url));
+                }
 
-                    if (!skipCache && drawable != null)
+                var downloads = PendingDownloads[url];
+                PendingDownloads.Remove(url);
+                if (drawable == null && bitmap != null)
+                {
+                    drawable = new BitmapDrawable(Resources, bitmap);
+                }
+                foreach (var iv in downloads)
+                {
+                    Device.Thread.ExecuteOnMainThread(() =>
                     {
-                        Device.ImageCache.Add(url, drawable);
-                    }
+                        iv.Invoke(drawable, url);
+                    });
                 }
             });
-
-            var downloads = PendingDownloads[url];
-            PendingDownloads.Remove(url);
-            var retval = drawable?.Bitmap == null ? null : new BitmapDrawable(Resources, drawable?.Bitmap);
-            foreach (var iv in downloads)
-            {
-                iv.Invoke(retval, url, false);
-            }
         }
 
         public static Bitmap LoadFromStorage(string url, double width, double height)
@@ -209,7 +177,7 @@ namespace iFactr.Droid
             {
                 try
                 {
-                    var bytes = iApp.File.Read(url);
+                    var bytes = iApp.File.Read(fetchPath);
                     fetchPath = iApp.Factory.TempPath.AppendPath(url.GetHashCode() + System.IO.Path.GetExtension(url));
                     iApp.File.Save(fetchPath, bytes, EncryptionMode.NoEncryption);
                 }

@@ -144,19 +144,10 @@ namespace iFactr.Droid
 
                 if (_filePath != null)
                 {
-                    ImageGetter.SetDrawable(_filePath, (d, url, fromCache) =>
+                    ImageGetter.SetDrawable(_filePath, (d, url) =>
                     {
                         if (url != _filePath) return;
-                        if (d == null && (FilePath.StartsWith("/") || FilePath.StartsWith("file:")))
-                        {
-                            var b = ImageGetter.LoadFromStorage(_filePath, 0, 0);
-                            Device.ImageCache.Add(_filePath, new ImageData(b, _filePath));
-                            SetImageDrawable(new BitmapDrawable(ImageGetter.Resources, b));
-                        }
-                        else
-                        {
-                            SetImageDrawable(d);
-                        }
+                        SetImageDrawable(d);
                         Loaded?.Invoke(this, EventArgs.Empty);
                         this.RequestResize();
                     }, Options);

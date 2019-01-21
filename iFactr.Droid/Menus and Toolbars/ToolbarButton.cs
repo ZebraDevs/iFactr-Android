@@ -30,9 +30,9 @@ namespace iFactr.Droid
                 }
                 _imagePath = value;
 
-                ImageGetter.SetDrawable(_imagePath, (bitmap, url, fromCache) =>
+                ImageGetter.SetDrawable(_imagePath, (bitmap, url) =>
                 {
-                    if (bitmap != null && url == _imagePath)
+                    if (url == _imagePath)
                         _button.SetCompoundDrawables(bitmap, null, null, null);
                 });
 

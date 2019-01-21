@@ -376,17 +376,18 @@ namespace iFactr.Droid
 
         public void SetBackground(string imagePath, ContentStretch stretch)
         {
-            ImageGetter.SetDrawable(imagePath, (drawable, url, fromCache) =>
+            ImageGetter.SetDrawable(imagePath, (drawable, url) =>
             {
-                if (drawable == null)
+                if (url != imagePath) return;
+                if (drawable is BitmapDrawable bit)
+                {
+                    SetBackground(bit.Bitmap);
+                }
+                else
                 {
                     SetBackground(null);
                     _backgroundPath = imagePath;
                     Invalidate();
-                }
-                else if (url == imagePath)
-                {
-                    SetBackground((drawable as BitmapDrawable)?.Bitmap);
                 }
             });
         }

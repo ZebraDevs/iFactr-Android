@@ -311,14 +311,10 @@ namespace iFactr.Droid
 
                 iApp.CurrentNavContext.ActivePane = Context.ActivePane;
                 iApp.CurrentNavContext.ActiveLayer = view.GetModel() as iLayer;
-                var fragmentManager = popoverManager ?? DroidFactory.MainActivity.FragmentManager;
-                var originalFragment = fragmentManager.FindFragmentById(FragmentId);
-                var transaction = fragmentManager.BeginTransaction();
-                transaction.DisallowAddToBackStack();
-                if (originalFragment != null)
-                    transaction.Remove(originalFragment);
-                transaction.Add(FragmentId, fragment);
-                transaction.CommitAllowingStateLoss();
+                (popoverManager ?? DroidFactory.MainActivity.FragmentManager)
+                    .BeginTransaction()
+                    .Replace(FragmentId, fragment)
+                    .CommitAllowingStateLoss();
             }
 
             #region Update screen titles

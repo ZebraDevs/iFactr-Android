@@ -107,9 +107,9 @@ namespace iFactr.Droid
             {
                 if (_image == value) return;
                 _image = value;
-                ImageGetter.SetDrawable(_image?.FilePath, (bitmap, url, fromCache) =>
+                ImageGetter.SetDrawable(_image?.FilePath, (bitmap, url) =>
                 {
-                    if (bitmap != null && url == _image?.FilePath)
+                    if (url == _image?.FilePath)
                         _button.SetCompoundDrawables(bitmap, null, null, null);
                 });
                 this.OnPropertyChanged();
