@@ -7,6 +7,7 @@ using iFactr.Core.Controls;
 using iFactr.UI;
 using Android.Runtime;
 using Android.Util;
+using System.Text;
 
 namespace iFactr.Droid
 {
@@ -104,9 +105,24 @@ namespace iFactr.Droid
         }
         private double _minHeight;
 
-        public string Text { get; set; }
+        public string Text
+        {
+            get
+            {
+                StringBuilder html = new StringBuilder(_text);
+                foreach (var item in Items)
+                    html.Append(item.GetHtml());
+                return html.ToString();
+            }
+            set
+            {
+                _text = value;
+                Items.Clear();
+            }
+        }
+        private string _text;
 
-        public List<PanelItem> Items { get; set; }
+        public List<PanelItem> Items { get; set; } = new List<PanelItem>();
 
         public Color ForegroundColor { get; set; }
 
